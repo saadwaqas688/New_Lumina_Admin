@@ -46,9 +46,9 @@ const SingleMealDetails = ({data}) => {
           Ingredients 
           </Typography>
                          
-       {   data.ingredients.map((item)=>{
+       {   data.ingredients.map((item,index)=>{
          return( 
-          <Grid container >
+          <Grid container key={index} >
          { <Grid item xs={12}>
             <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center',ml:'20px',mr:'20px'}}>
             <Typography variant="h6" color="text.secondary">
@@ -68,10 +68,10 @@ const SingleMealDetails = ({data}) => {
     <Typography variant="h5" color="text.secondary" sx={{mt:'20px',textAlign:'center',fontWeight:'bold'}}>
          Recipe 
         </Typography>
-        <Typography variant="body1" color="text.secondary" sx={{mt:'20px',ml:'20px',mr:'20px'}}>
+        <Typography  component="div" variant="body1" color="text.secondary" sx={{mt:'20px',ml:'20px',mr:'20px'}}>
          {data.recipe.map((item,index)=>{
           return (
-          <Box >
+          <Box key={index} >
             <CircleBulletIcon sx={{fontSize:"10px" ,mr:'5px'}}/>
             {item}
           </Box>

@@ -266,8 +266,8 @@ const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
                                     style={{ marginBottom: "10px" }}
                                   >
                                     {values.ingredients.map((friend, index) => (
-                                      <>
-                                      <Grid item xs={6}>
+                                      <React.Fragment key={index}>
+                                      <Grid item xs={6} key={index}>
                                         <div key={index}>
                                           <Textfield
                                            name={`ingredients.${index}.ingredient`}
@@ -285,7 +285,7 @@ const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
                                          />
                                        </div>
                                      </Grid>
-                                     </>
+                                     </React.Fragment>
                                     ))}
                                   </Grid>
                                 </>
@@ -331,6 +331,7 @@ const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
                                     style={{ marginBottom: "10px" }}
                                   >
                                     {values.recipe.map((friend, index) => (
+                                      <React.Fragment key={index}>
                                       <Grid item xs={12}>
                                         <div key={index}>
                                           <Textfield
@@ -342,6 +343,7 @@ const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
                                           />
                                         </div>
                                       </Grid>
+                                      </React.Fragment>
                                     ))}
                                   </Grid>
                                 </>
