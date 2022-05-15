@@ -9,7 +9,6 @@ const Select = ({
 }) => {
   const { setFieldValue } = useFormikContext();
   const [field, meta] = useField(name);
-
   const handleChange = evt => {
     const { value } = evt.target;
     setFieldValue(name, value);
@@ -33,7 +32,7 @@ const Select = ({
     <TextField {...configSelect}>
            {options.map((item) => {
         return (
-          <MenuItem key={item.id} value={item.value}>
+          <MenuItem key={item.id} value={item}>
             {item.value}
           </MenuItem>
         )

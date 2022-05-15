@@ -7,6 +7,7 @@ import {
 import SiteWrapper from "../components/UI/SiteWrapper/SiteWrapper";
 import ViewAllMeals from "../components/Views/Meal/viewAllMeals";
 import ViewAllProducts from "../components/Views/Product/viewAllProducts";
+import ViewAllWorkOuts from "../components/Views/WorkOuts/viewAllWorkOuts";
 
 const ApplicationRoutes = () => {
 //   const isLoggedIn = useSelector((state) => state.auth.loggedIn);
@@ -18,6 +19,7 @@ const ApplicationRoutes = () => {
     <SiteWrapper>
     <Routes>
       <Route path="/shop" element={<ViewAllProducts/>} />
+      <Route path="/workOuts" element={<ViewAllWorkOuts/>} />
       <Route path="/meal" element={<ViewAllMeals/>} />
     </Routes>
     </SiteWrapper>
