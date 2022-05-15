@@ -30,7 +30,6 @@ const Inputfield = ({
   if (mata && mata.touched && mata.error) {
     configTextfield.error = true;
     configTextfield.helperText = mata.error;
-    console.log('mata.error',mata.error)
   }
 
   const handleChange = async (evt) => {

@@ -96,9 +96,7 @@ export default function ViewAllMeals() {
         // }
        },[ ])
       
-      const deleteMeal = async (id,url) => {
-        console.log('ViewAllProducts',url)
-        
+      const deleteMeal = async (id,url) => {        
         await deleteService("shop",id)
         if(url){
           deleteAsset(url)
@@ -122,13 +120,6 @@ export default function ViewAllMeals() {
           });   
         setRecords(updatedData) 
     }
-    console.log('records',records)
-    // function showDetails(record){
-    //   setOpenSingleRecordModal(true)
-    //  setSingleRecord(record)
-    //  handleOpenForm()
-
-    // }
     return (<>          
 
 {   loading ? (
@@ -188,7 +179,7 @@ export default function ViewAllMeals() {
     setShowDetails={setShowDetails}
     setSingleRecord={setSingleRecord}
     deleteRecord={deleteMeal}
-    updateRecord={updateStatus}
+    updateStatus={updateStatus}
      />
     {/* <Table records={records} 
     

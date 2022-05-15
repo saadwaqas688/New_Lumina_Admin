@@ -15,15 +15,15 @@ import {
     ListItemText,
   } from "@mui/material";
   import React from "react";
-//   import {useLocation} from 'react-router';
+  import {useLocation} from 'react-router';
   
   
   const SideBar = () => {
-    // const { pathname } = useLocation();
+    const { pathname } = useLocation();
     return (
           <List >
             <ListItem >
-              <ListItemButton component="a" href="/meal">
+              <ListItemButton component="a" href="/meal" selected={pathname==='/meal'?true:false}>
                 <ListItemIcon >
                   <Home sx={{color:'#ff6699' , fontSize:'40px'}}/>
                 </ListItemIcon>
@@ -79,7 +79,7 @@ import {
               </ListItemButton>
             </ListItem>
             <ListItem  >
-              <ListItemButton component="a" href="/shop">
+              <ListItemButton component="a" href="/shop" selected={pathname==='/shop'?true:false}>
                 <ListItemIcon>
                   <Settings sx={{color:'#ff6699' , fontSize:'40px'}}/>
                 </ListItemIcon>

@@ -28,7 +28,6 @@ export default function DataTable({columns,
                                   updateStatus,
 
 }) {
-    console.log('rows',rows)
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -87,7 +86,6 @@ function openInPopup(record,state){
                     {columns.map((column) => {
                       
                       const value = row[column.id];
-                      console.log('value++++++',value)
                       const assetUrl=value==="imageContain"?value.image:'';
                     if(column.id==="imageContain"){
                          return (<TableCell key={column.id} align={column.align}>

@@ -74,9 +74,7 @@ export default function ViewAllProducts() {
       getAllProducts()
        },[ ])
       
-      const deleteMeal = async (id,url) => {
-        console.log('ViewAllProducts',url)
-        
+      const deleteMeal = async (id,url) => {        
         await deleteService("shop",id)
         if(url){
           deleteAsset(url)

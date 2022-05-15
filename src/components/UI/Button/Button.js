@@ -58,8 +58,6 @@ import MaterialButton from '@mui/material/Button';
  const Button=(props )=> {
 
     const { color, children, onClick,variant } = props;
-    console.log("children",children)
-
     return (
         <MaterialButton
             color={color}
