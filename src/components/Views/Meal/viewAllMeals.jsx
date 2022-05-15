@@ -188,7 +188,7 @@ export default function ViewAllMeals() {
     setShowDetails={setShowDetails}
     setSingleRecord={setSingleRecord}
     deleteRecord={deleteMeal}
-    updateStatus={updateStatus}
+    updateRecord={updateStatus}
      />
     {/* <Table records={records} 
     
