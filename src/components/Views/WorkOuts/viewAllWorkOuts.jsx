@@ -65,7 +65,7 @@ export default function ViewAllWorkOuts() {
 
         querySnapshot.forEach((doc) => {
           list.push({id:doc.id,
-              imageContain:{image:doc.data().image,title:doc.data().title},
+              imageContain:{image:doc.data().image,title:doc.data().name},
               ...doc.data()})
                 });
         setRecords(list)
@@ -84,8 +84,6 @@ export default function ViewAllWorkOuts() {
       setEquipments(list)
       setLoading(false)
           };
-
-console.log('equipmentsFromViewAll',equipments)
     useEffect(()=>{
           getAllWorkOuts()
           getAllProducts()

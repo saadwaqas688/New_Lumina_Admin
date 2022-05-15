@@ -103,7 +103,15 @@ function openInPopup(record,state){
                     </TableCell>)
                 
                     
-                    }else if(column.id==="Details"){
+                    }else if(column.id==="time"){
+                      return (
+                        <TableCell key={column.id} align={column.align}>
+                          {(new Date(value.toDate())).toDateString()}
+                        </TableCell>
+                        );
+
+                  }
+                    else if(column.id==="Details"){
                         return (
                           <TableCell key={column.id} align={column.align}>
                                 <Button
