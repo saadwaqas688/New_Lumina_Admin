@@ -1,20 +1,12 @@
 import React, { useEffect, useState } from 'react'
-// import FormikForm from './addMeal';
 import {Box,Skeleton} from '@mui/material';
-import { deleteAsset, deleteService, getService, updateService } from '../../../services/services';
-// import Popup from '../../UI/Popup/Popup';
+import { deleteAsset, deleteService, getService} from '../../../services/services';
 import DataTable from '../../UI/DataTable/DataTable';
 import Modal from "@mui/material/Modal";
-import AddMeal from './addMeal'; 
-import SingleMealDetails from './singleMealDetails'
+import AddClassCategory from './addClassCategory';
+import CategoryDetails from './categoryDetails';
 
-// const headCells = [
-//     { id: 'title', label: 'Title' },
-//     { id: 'Details', label: 'Details', disableSorting: true },
-//     { id: 'status', label: 'Status', disableSorting: true },
-//     { id: 'Actions', label: 'Actions', disableSorting: true },
 
-// ]
 const style = {
   position: "absolute",
   top: "50%",
@@ -29,15 +21,11 @@ const style = {
   boxShadow: 24,
   borderRadius: 2,
 };
+
 const columns = [
   { id: 'imageContain', label: 'Title', minWidth: 170 },
+
   { id: 'Details', label: 'Details', minWidth: 100 },
-  {
-    id: "status",
-    label: 'Status',
-    minWidth: 170,
-    align: 'right',
-  },
   {
     id: 'Actions',
     label: 'Actions',
@@ -45,7 +33,7 @@ const columns = [
     align: 'right',
   },
 ];
-export default function ViewAllMeals() {
+export default function ViewAllClassCategories() {
   const [openModal, setOpenModal] = useState(false);
 
   const [EditRecord, setEditRecord] = useState(false);
@@ -53,10 +41,6 @@ export default function ViewAllMeals() {
   const [showDetails, setShowDetails] = useState(false);
   
   const [singleRecord, setSingleRecord] = useState()
-
-  const [records, setRecords] = useState()
-  const [loading, setLoading] = useState(false)
-
   function handleClose(){
     setEditRecord(false)
     setShowDetails(false)
@@ -64,15 +48,16 @@ export default function ViewAllMeals() {
     setOpenModal(false)
     }
 
- 
-    const getAllMeals = async() => {
+    const [records, setRecords] = useState()
+    const [loading, setLoading] = useState(false)
+    const getAllProducts = async() => {
         let list=[]
         setLoading(true)
-        const querySnapshot =await getService("meal")
+        const querySnapshot =await getService("classCategories")
 
         querySnapshot.forEach((doc) => {
           list.push({id:doc.id,
-              imageContain:{image:doc.data().image,title:doc.data().title},
+              imageContain:{image:doc.data().image,title:doc.data().name},
               ...doc.data()})
                 });
         setRecords(list)
@@ -80,33 +65,18 @@ export default function ViewAllMeals() {
             };
 
     useEffect(()=>{
-       getAllMeals()
+      getAllProducts()
        },[ ])
       
-      const deleteMeal = async (id,url) => {        
-        await deleteService("shop",id)
+      const deleteCategory = async (record,url) => {        
+        await deleteService("classCategories",record.id)
         if(url){
           deleteAsset(url)
         }
-        await deleteService("meal",id)
-        const result =records.filter((item)=>item.id!==id)
+        const result =records.filter((item)=>item.id!==record.id)
         setRecords(result)
       };
 
-      const updateStatus = async (id,status) => {
-        const newStatus= status==="featured"?"notFeatured":"featured";
-        await updateService('meal',id,{status:newStatus})
-
-        const updatedData = records.map((item) => {
-            
-          if(item.id === id){
-              item.status=newStatus
-          } 
-          return item
-          
-          });   
-        setRecords(updatedData) 
-    }
     return (<>          
 
 {   loading ? (
@@ -120,7 +90,7 @@ export default function ViewAllMeals() {
 
     records ?
     <>
-       <Modal
+     <Modal
         open={openModal}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
@@ -129,23 +99,23 @@ export default function ViewAllMeals() {
         <Box sx={style}>
           {/* <Paper sx={{width:'500',height:'500'}}> */}
         { showDetails ?
-            <SingleMealDetails data={singleRecord}/>
+            <CategoryDetails />
                    :
             EditRecord?
-            <AddMeal  
+            <AddClassCategory
             
             records={records}
             setRecords={setRecords}
             handleModal={handleClose}
-            getAllMeals={getAllMeals}
+            getAllMeals={getAllProducts}
             recordForEdit={singleRecord}
             /> :
-            <AddMeal  
+            <AddClassCategory  
             
             records={records}
             setRecords={setRecords}
             handleModal={handleClose}
-            getAllMeals={getAllMeals}
+            getAllMeals={getAllProducts}
             recordForEdit={null}
             />
             
@@ -155,18 +125,19 @@ export default function ViewAllMeals() {
           {/* </Paper> */}
         </Box>
       </Modal>
+ 
     <DataTable 
     columns={columns}
      rows={records}
      editButton={true}
      deleteButton={true}
-     addNewButton={true}
+     firstTopButton={"Add New Category"}
      setOpenModal={setOpenModal}
     setEditRecord={setEditRecord}
     setShowDetails={setShowDetails}
     setSingleRecord={setSingleRecord}
-    deleteRecord={deleteMeal}
-    updateStatus={updateStatus}
+    deleteRecord={deleteCategory}
+    updateStatus={false}
      />
           </>:
           <></>

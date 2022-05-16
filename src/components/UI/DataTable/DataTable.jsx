@@ -11,13 +11,15 @@ import { Box,Typography } from '@mui/material';
 import Button from "../Button/Button";
 import EditIcon from '../../Icons/EditIcon';
 import DeleteIcon from '../../Icons/DeleteIcon';
+import { Link as RouterLink} from "react-router-dom";
 
 
 
 export default function DataTable({columns,
                                   rows,
-                                  addNewButton,
-                                  handelDelete,
+                                  firstTopButton,
+                                  secondTopButton,
+                                  topLinkButton,
                                   editButton,
                                   setOpenModal,
                                   deleteButton,
@@ -40,10 +42,6 @@ export default function DataTable({columns,
     setPage(0);
   };
 
-//   const openInPopup = item => {
-//     setRecordForEdit(item)
-//     setOpenPopup(true)
-// }
 function openInPopup(record,state){
   if(state==="edit"){
     setEditRecord(true)
@@ -58,9 +56,21 @@ function openInPopup(record,state){
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
         {
-            addNewButton &&
-                  <Button variant="contained" onClick={openInPopup}>Add New</Button>                      
+            firstTopButton &&
+                  <Button sx={{mb:'20px'}} variant="contained" onClick={openInPopup}>{firstTopButton}</Button>                      
         }
+           {   topLinkButton &&
+                 <RouterLink to="/classesCategories"  style={{ textDecoration: 'none' }} >
+                
+                 <Button sx={{mb:'20px',ml:'20px'}} variant="contained" >{topLinkButton}</Button>                      
+
+
+                </RouterLink>
+           }
+            {
+            secondTopButton &&
+                  <Button sx={{mb:'20px',ml:'20px'}} variant="contained" onClick={openInPopup}>{secondTopButton}</Button>                      
+             }
 
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
@@ -147,7 +157,7 @@ function openInPopup(record,state){
                                   <DeleteIcon
                                   variant="contained"
                                   color="primary"
-                                  onClick={() => { deleteRecord(row.id,assetUrl) }}  
+                                  onClick={() => { deleteRecord(row,assetUrl) }}  
                                    />
                                    </TableCell>
                             )
@@ -166,7 +176,7 @@ function openInPopup(record,state){
                             <DeleteIcon
                             variant="contained"
                             color="primary"
-                            onClick={() => { handelDelete(row.id,assetUrl) }}  
+                            onClick={() => { deleteRecord(row,assetUrl) }}  
                              />
                             </TableCell>)
                           }
