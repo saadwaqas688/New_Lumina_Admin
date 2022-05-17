@@ -33,6 +33,7 @@ export default function DataTable({columns,
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
+ 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -57,19 +58,29 @@ function openInPopup(record,state){
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
         {
             firstTopButton &&
-                  <Button sx={{mb:'20px'}} variant="contained" onClick={openInPopup}>{firstTopButton}</Button>                      
-        }
+                  <Button 
+                       variant="contained" 
+                     onClick={openInPopup}>
+                    {firstTopButton}
+                 </Button>                      
+         }
            {   topLinkButton &&
                  <RouterLink to="/classesCategories"  style={{ textDecoration: 'none' }} >
                 
-                 <Button sx={{mb:'20px',ml:'20px'}} variant="contained" >{topLinkButton}</Button>                      
+                 <Button 
+              
+                 variant="contained" 
+                 >
+                 {topLinkButton}
+                 </Button>                      
 
 
                 </RouterLink>
            }
             {
             secondTopButton &&
-                  <Button sx={{mb:'20px',ml:'20px'}} variant="contained" onClick={openInPopup}>{secondTopButton}</Button>                      
+                  <Button 
+                   variant="contained" onClick={openInPopup}>{secondTopButton}</Button>                      
              }
 
       <TableContainer sx={{ maxHeight: 440 }}>
@@ -87,6 +98,7 @@ function openInPopup(record,state){
               ))}
             </TableRow>
           </TableHead>
+          { rows &&
           <TableBody>
             {rows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -126,7 +138,6 @@ function openInPopup(record,state){
                           <TableCell key={column.id} align={column.align}>
                                 <Button
                                 variant="contained"
-                                color="primary"
                                 onClick={() => { openInPopup(row,"details") }} >
                                   View Details
                                 </Button>
@@ -138,11 +149,9 @@ function openInPopup(record,state){
                         return (   <TableCell key={column.id} align={column.align}>
                               <Button
                                 variant="contained"
-                                color="primary"
                                 onClick={() => { updateStatus(row.id,value)}} >
                                   {value}
                                 </Button>
-                        {/* <Button variant="contained"  color="secondary" onClick={()=>updateStatus(row.id,value)}>{value}</Button>                       */}
                        </TableCell>
                         )
 
@@ -152,11 +161,9 @@ function openInPopup(record,state){
                                 <TableCell key={column.id} align={column.align}>
                                 <EditIcon  
                                 variant="contained"
-                                color="secondary"
                                 onClick={() => { openInPopup(row,'edit') }} />
                                   <DeleteIcon
                                   variant="contained"
-                                  color="primary"
                                   onClick={() => { deleteRecord(row,assetUrl) }}  
                                    />
                                    </TableCell>
@@ -202,6 +209,7 @@ function openInPopup(record,state){
                 );
               })}
           </TableBody>
+         }
         </Table>
       </TableContainer>
       <TablePagination

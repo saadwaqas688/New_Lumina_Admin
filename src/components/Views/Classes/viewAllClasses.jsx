@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react'
 import { db } from '../../../config /Firebase/firebase'
 import { deleteAsset, getService, updateService } from '../../../services/services'
 import DataTable from '../../UI/DataTable/DataTable';
-import SingleClassDetails from '../ClassCategories/categoryDetails';
 import AddClass from './addClass';
+import SingleClassDetails from './singleClassDetails';
 const style = {
   position: "absolute",
   top: "50%",
@@ -60,10 +60,11 @@ export default function ViewAllClasses() {
         const querySnapshot =await getService("classCategories")
 
         querySnapshot.forEach((doc) => {
+          
           list.push({id:doc.id,
               ...doc.data()})
                 });
-
+       console.log('list',list)
                 list.map((item)=>{
                   return(
                   
@@ -76,9 +77,6 @@ export default function ViewAllClasses() {
                    )
                   }))
                 })
-
-
-                console.log('allClasses+++++====',list)
 
         setRecords(newList)
         setLoading(false)
@@ -166,7 +164,7 @@ export default function ViewAllClasses() {
     >
       <Box sx={style}>
       { showDetails ?
-      <SingleClassDetails/>                 :
+      <SingleClassDetails  data={singleRecord}/>                 :
           EditRecord?
           <AddClass  
           

@@ -6,6 +6,7 @@ import {
   } from "react-router-dom";
 import SiteWrapper from "../components/UI/SiteWrapper/SiteWrapper";
 import ViewAllAdminUsers from "../components/Views/AdminUsers/viewAllAdminUsers";
+import ViewAllBlogs from "../components/Views/Blogs/viewAllBlogs";
 import ViewAllClassCategories from "../components/Views/ClassCategories/viewAllClassCategories";
 import ViewAllClasses from "../components/Views/Classes/viewAllClasses";
 import ViewAllMeals from "../components/Views/Meal/viewAllMeals";
@@ -29,6 +30,8 @@ const ApplicationRoutes = () => {
       <Route path="/users" element={<ViewAllUsers/>} />
       <Route path="/classes" element={<ViewAllClasses/>} />
       <Route path="/classesCategories" element={<ViewAllClassCategories/>} />
+      <Route path="/blogs" element={<ViewAllBlogs/>} />
+
 
     </Routes>
     </SiteWrapper>

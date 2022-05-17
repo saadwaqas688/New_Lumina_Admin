@@ -46,6 +46,14 @@ import {
                 <ListItemText sx={{color:"purple"}} primary="Classes" />
               </ListItemButton>
             </ListItem>
+            <ListItem  >
+              <ListItemButton component="a" href="/blogs" selected={pathname==='/blogs'?true:false}>
+                <ListItemIcon>
+                  <Settings sx={{color:'#ff6699' , fontSize:'40px'}}/>
+                </ListItemIcon>
+                <ListItemText sx={{color:"purple"}} primary="Blogs" />
+              </ListItemButton>
+            </ListItem>
             <ListItem>
               <ListItemButton component="a" href="/workOuts">
                 <ListItemIcon >

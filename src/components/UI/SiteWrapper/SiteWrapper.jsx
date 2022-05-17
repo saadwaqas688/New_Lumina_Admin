@@ -39,6 +39,7 @@ function SiteWrapper(props) {
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
+          bgcolor:"#ff6699",
         }}
       >
         <Toolbar>
@@ -51,9 +52,9 @@ function SiteWrapper(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Responsive drawer
-          </Typography>
+          <Typography variant="h6" noWrap component="div" sx={{fontWeight: '1000'}}>
+          LUMINA ADMIN
+          </Typography> 
         </Toolbar>
       </AppBar>
       <Box
