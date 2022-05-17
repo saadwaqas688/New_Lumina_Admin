@@ -11,7 +11,8 @@ import PreviewImage from "../../UI/PreviewImage/PreviewImage";
 import Inputfield from "../../UI/Inputfield/InputField";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import Select from "../../UI/Select/Select";
-// import * as Yup from "yup";
+import * as Yup from "yup";
+import DateAndTimePicker from "../../UI/DateTimePicker/DateTimePicker";
 
 // 05/15/2022 09:00 pm
 // const categories=[{id:'1'},{id:'2'},{id:'3'}]
@@ -19,12 +20,12 @@ import Select from "../../UI/Select/Select";
 
 const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categories}) => {
   const [editMode, setEditMode] = useState(false);
-  // const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif"];
+  const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif"];
   const INITIAL_FORM_STATE = {
     title: "",
     description:"",
     category:"",
-    startingDate:"",
+    startingDate:new Date('2014-08-18T21:11:54'),
     equipments: [" "],
     file: null,
     imageUrl: "",
@@ -32,89 +33,57 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
     error: null,
   };
 
-  // let FORM_VALIDATION = "";
+  let FORM_VALIDATION = "";
 
-  // if (editMode) {
-  //   FORM_VALIDATION = Yup.object().shape({
-  //     title: Yup.string()
-  //       .typeError("Please enter a valid phone number")
-  //       .required("Required"),
-  //       description: Yup.string().required("Required"),
-  //       category: Yup.string().required("Required"),
-  //       shedule:Yup.array(
-  //         Yup.object({
-  //           startTime: Yup.string()
-  //             .required('Ingredient name needed'),
-  //             // .min(3, 'Ingredient name needs to be at least 3 characters')
-  //             // .max(
-  //             //   10,
-  //             //   'Ingredient name needs to be at most 10 characters'
-  //             // ),
-  //           endTime: Yup.number()
-  //             .required('Quantity needed')
-  //             // .min(1, 'Quantity needs to be at least 1%')
-  //             // .max(100, 'Quantity can be at most 100%'),
-  //         })
-  //       )
-  //         .min(1, 'You need to provide at least 1 startTime')
-  //         .max(3, 'You can only provide 3 startTime'),
-  //         workOuts: Yup.array()
-  //         .of(
-  //           Yup.string("String is Required!")
-  //             .min(4, "Too Short")
-  //             .max(20, "Too Long")
-  //             .required("Required")
-  //         )
-  //         .min(1, "Atleast One Social Media is Required!")
-  //         .required("Required"),
+  if (editMode) {
+    FORM_VALIDATION = Yup.object().shape({
+      title: Yup.string()
+        .typeError("Please enter a valid phone number")
+        .required("Required"),
+        description: Yup.string().required("Required"),
+        category: Yup.string().required("Required"),
+          startingDate: Yup.date().nullable(),
+          equipments: Yup.array()
+          .of(
+            Yup.string("String is Required!")
+              .min(4, "Too Short")
+              .max(20, "Too Long")
+              .required("Required")
+          )
+          .min(1, "Atleast One Social Media is Required!")
+          .required("Required"),
 
-  //     // file: Yup.array()
-  //     //   .required("Required Field")
-  //   });
-  // } else {
-  //   FORM_VALIDATION = Yup.object().shape({
-  //     title: Yup.string()
-  //     .typeError("Please enter a valid phone number")
-  //     .required("Required"),
-  //     description: Yup.string().required("Required"),
-  //     category: Yup.string().required("Required"),
-  //     shedule:Yup.array(
-  //       Yup.object({
-  //         startTime: Yup.string()
-  //           .required('Ingredient name needed')
-  //           .min(3, 'Ingredient name needs to be at least 3 characters')
-  //           .max(
-  //             10,
-  //             'Ingredient name needs to be at most 10 characters'
-  //           ),
-  //         endTime: Yup.number()
-  //           .required('Quantity needed'),
-  //           // .min(1, 'Quantity needs to be at least 1%')
-  //           // .max(100, 'Quantity can be at most 100%'),
-  //       })
-  //     )
-  //       .min(1, 'You need to provide at least 1 startTime')
-  //       .max(3, 'You can only provide 3 startTime'),
-  //       workOuts: Yup.array()
-  //       .of(
-  //         Yup.string("String is Required!")
-  //           .min(4, "Too Short")
-  //           .max(20, "Too Long")
-  //           .required("Required")
-  //       )
-  //       .min(1, "Atleast One Social Media is Required!")
-  //       .required("Required"),
-  //     file: Yup.mixed()
-  //       .nullable()
-  //       .required("Required Field")
-  //       .test(
-  //         "type",
-  //         "Invalid file format selection",
-  //         (value) =>
-  //           !value || (value && SUPPORTED_FORMATS.includes(value[2].type))
-  //       ),
-  //   });
-  // }
+      // file: Yup.array()
+      //   .required("Required Field")
+    });
+  } else {
+    FORM_VALIDATION = Yup.object().shape({
+      title: Yup.string()
+      .typeError("Please enter a valid phone number")
+      .required("Required"),
+      description: Yup.string().required("Required"),
+      category: Yup.string().required("Required"),
+      startingDate: Yup.date().nullable(),
+      equipments: Yup.array()
+      .of(
+        Yup.string("String is Required!")
+          .min(4, "Too Short")
+          .max(20, "Too Long")
+          .required("Required")
+      )
+      .min(1, "Atleast One Social Media is Required!")
+      .required("Required"),
+      file: Yup.mixed()
+        .nullable()
+        .required("Required Field")
+        .test(
+          "type",
+          "Invalid file format selection",
+          (value) =>
+            !value || (value && SUPPORTED_FORMATS.includes(value[2].type))
+        ),
+    });
+  }
   const initialValues = recordForEdit ? recordForEdit : INITIAL_FORM_STATE;
   const [loader, setloader] = useState(false);
 	const uniqueID = () => {
@@ -295,7 +264,7 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
                 initialValues={{
                   ...initialValues,
                 }}
-                // validationSchema={FORM_VALIDATION}
+                validationSchema={FORM_VALIDATION}
                 onSubmit={(values) => handelclick(values)}
                 render={({ values, errors, touched,submitForm}) => (
                   <>
@@ -306,7 +275,8 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
                         <Textfield name="title" label="Title" size="small" />
                       </Grid>
                       <Grid item xs={6}>
-                        <Textfield name="startingDate" label="Starting Date" size="small" />
+                        < DateAndTimePicker  value={values.startingDate} name="startingDate" size="small" />
+
                       </Grid>
                       <Grid item xs={6}>
                         <Select

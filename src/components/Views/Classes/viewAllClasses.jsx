@@ -23,6 +23,7 @@ const style = {
 const columns = [
   { id: 'imageContain', label: 'Title', minWidth: 170 },
   { id: 'classCategory', label: 'Category', minWidth: 100 },
+  { id: 'startingDate', label: 'Starting Date', minWidth: 100 },
   { id: 'Details', label: 'Details', minWidth: 100 },
   {
     id: 'Actions',
@@ -70,7 +71,7 @@ export default function ViewAllClasses() {
                    return(
                      item.imageContain={image:item.image,title:item.title},
                      item.classCategory=item.category.value,
-
+                     item.startingDate=(new Date(item.startingDate.toDate())).toDateString(),
                     newList.push(item)
                    )
                   }))
