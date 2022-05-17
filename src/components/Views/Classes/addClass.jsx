@@ -25,6 +25,7 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
     title: "",
     description:"",
     category:"",
+    targetArea:"",
     startingDate:new Date('2014-08-18T21:11:54'),
     equipments: [" "],
     file: null,
@@ -42,6 +43,7 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
         .required("Required"),
         description: Yup.string().required("Required"),
         category: Yup.string().required("Required"),
+        targetArea:Yup.string().required("Required"),
           startingDate: Yup.date().nullable(),
           equipments: Yup.array()
           .of(
@@ -63,6 +65,7 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
       .required("Required"),
       description: Yup.string().required("Required"),
       category: Yup.string().required("Required"),
+      targetArea:Yup.string().required("Required"),
       startingDate: Yup.date().nullable(),
       equipments: Yup.array()
       .of(
@@ -128,6 +131,7 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
                   title: values.title,
                   image: downloadURL,
                   description:values.description,
+                  targetArea:values.targetArea,
                   startingDate:values.startingDate,
                   equipments:values.equipments,
                   users:[],
@@ -204,6 +208,7 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
           id:values.id,
           title: values.title,
           image: values.image,
+          targetArea:values.targetArea,
           description: values.description,
           category:values.category,
           equipments:values.equipments,
@@ -285,6 +290,9 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
                           size="small"
                           options={categories}
                         />
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Textfield name="targetArea" label="Target Area" size="small" />
                       </Grid>
                       <Grid item xs={12}>
                         <Textfield
