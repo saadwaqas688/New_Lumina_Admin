@@ -4,7 +4,7 @@ import { deleteAsset, deleteService, getService} from '../../../services/service
 import DataTable from '../../UI/DataTable/DataTable';
 import Modal from "@mui/material/Modal";
 import AddClassCategory from './addClassCategory';
-import CategoryDetails from './categoryDetails';
+import SingleCategoryDetails from './singleCategoryDetails';
 
 
 const style = {
@@ -99,7 +99,7 @@ export default function ViewAllClassCategories() {
         <Box sx={style}>
           {/* <Paper sx={{width:'500',height:'500'}}> */}
         { showDetails ?
-            <CategoryDetails />
+        <SingleCategoryDetails data={singleRecord}/>
                    :
             EditRecord?
             <AddClassCategory

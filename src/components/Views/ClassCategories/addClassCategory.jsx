@@ -183,16 +183,17 @@ const AddClassCategory = ({ recordForEdit, records,  handleModal,getAllProducts 
                 render={({ values, errors, touched,submitForm}) => (
                   <Form>
                     <Grid container spacing={2}>
-                      <Grid item xs={6}>
+                      <Grid item xs={12}>
                         <Textfield name="name" label="Name" size="small" />
                       </Grid>
-                      <Grid item xs={6}>
+                      <Grid item xs={12}>
                         <Textfield
                           name="description"
                           label="Description"
                           size="small"
                           multiline={true}
-                          minRows={4}
+                          maxRows={6}
+                          minRows={6}
                         />
                       </Grid>
                       {values.error && <div>{values.error}</div>}
