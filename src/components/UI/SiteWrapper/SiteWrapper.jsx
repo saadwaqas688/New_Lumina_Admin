@@ -10,6 +10,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import SideBar from '../SideBar/SideBar';
+import { Outlet } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -94,7 +95,8 @@ function SiteWrapper(props) {
         sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
       >
         <Toolbar />
-        {props.children}
+        {/* {props.children} */}
+        <Outlet />
       </Box>
     </Box>
   );
