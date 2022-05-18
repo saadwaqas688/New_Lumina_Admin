@@ -175,11 +175,14 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
                   // handleModal();
                   // getAllClasses()
                 } else {
+
                   const docRef = doc(db, "classCategories", values.category.id);
                   const docSnap = await getDoc(docRef);
+                  console.log('docSnap',docSnap)
                   
                   if (docSnap.exists()) {
                   console.log("Document data viky:", docSnap.data());
+
 
                     let list=docSnap.data()
                     list.classes.push(record)
@@ -289,6 +292,7 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
                           label="Category"
                           size="small"
                           options={categories}
+                          isObject={true}
                         />
                       </Grid>
                       <Grid item xs={6}>

@@ -10,7 +10,7 @@ import { postService, updateService } from "../../../services/services";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../../config /Firebase/firebase";
 
-const AddClassCategory = ({ recordForEdit, records,  handleModal,getAllProducts }) => {
+const AddClassCategory = ({ recordForEdit, records,  handleModal,getAllCategories }) => {
   const [editMode, setEditMode] = useState(false);
   const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif"];
 
@@ -127,18 +127,19 @@ const AddClassCategory = ({ recordForEdit, records,  handleModal,getAllProducts 
                   description: values.description,
                   image: downloadURL,
                   name: values.name,
+                  classes:[],
                   file: filedata,
                 };
                 if (recordForEdit) {
                   await updateService("classCategories",recordForEdit.id,record)
                   setloader(false);
                   handleModal();
-                  getAllProducts()
+                  getAllCategories()
                 } else {
                   await postService("classCategories",record)
                   setloader(false);
                   handleModal();
-                  getAllProducts()
+                  getAllCategories()
 
                 }
               }
@@ -150,12 +151,13 @@ const AddClassCategory = ({ recordForEdit, records,  handleModal,getAllProducts 
           description: values.description,
           image: values.image,
           name: values.name,
+          classes:[],
           file: values.file,
         };
         await updateService("classCategories",recordForEdit.id,record)
         setloader(false);
         handleModal();
-        getAllProducts()
+        getAllCategories()
       }
     } catch (error) {
       console.log("catchError", error);

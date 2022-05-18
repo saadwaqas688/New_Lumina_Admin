@@ -164,7 +164,7 @@ export default function ViewAllClasses() {
     >
       <Box sx={style}>
       { showDetails ?
-      <SingleClassDetails  data={singleRecord}/>                 :
+      <SingleClassDetails  handleModal={handleClose} getAllClasses={getAllClasses} data={singleRecord}/>                 :
           EditRecord?
           <AddClass  
           

@@ -50,7 +50,7 @@ export default function ViewAllClassCategories() {
 
     const [records, setRecords] = useState()
     const [loading, setLoading] = useState(false)
-    const getAllProducts = async() => {
+    const getAllCategories = async() => {
         let list=[]
         setLoading(true)
         const querySnapshot =await getService("classCategories")
@@ -65,7 +65,7 @@ export default function ViewAllClassCategories() {
             };
 
     useEffect(()=>{
-      getAllProducts()
+      getAllCategories()
        },[ ])
       
       const deleteCategory = async (record,url) => {        
@@ -107,7 +107,7 @@ export default function ViewAllClassCategories() {
             records={records}
             setRecords={setRecords}
             handleModal={handleClose}
-            getAllMeals={getAllProducts}
+            getAllMeals={getAllCategories}
             recordForEdit={singleRecord}
             /> :
             <AddClassCategory  
@@ -115,7 +115,7 @@ export default function ViewAllClassCategories() {
             records={records}
             setRecords={setRecords}
             handleModal={handleClose}
-            getAllMeals={getAllProducts}
+            getAllMeals={getAllCategories}
             recordForEdit={null}
             />
             
