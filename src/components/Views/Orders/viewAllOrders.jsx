@@ -1,20 +1,16 @@
-
 import React, { useEffect, useState } from 'react'
 import {Box,Skeleton} from '@mui/material';
-import { deleteAsset, deleteService, getService} from '../../../services/services';
+import { deleteAsset, deleteService, getService, updateService } from '../../../services/services';
 import DataTable from '../../UI/DataTable/DataTable';
 import Modal from "@mui/material/Modal";
-import AddProduct from './addProduct';
-import SingleProductDetails from './singleProductDetails';
-
-
+import SingleOrderDetails from './singleOrderDetails';
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "80%",
-   height:"80%",
+  width: "50%",
+   height:"50%",
   overflow:'scroll',
   bgcolor: "background.paper",
   border: "2px solid #fbbe36",
@@ -22,16 +18,17 @@ const style = {
   boxShadow: 24,
   borderRadius: 2,
 };
-
 const columns = [
-  { id: 'imageContain', label: 'Title', minWidth: 170 },
+  { id: 'name', label: 'Name', minWidth: 170 },
+  { id: 'email', label: 'Email', minWidth: 100 },
+  { id: 'Details', label: 'View Details', minWidth: 170 },
+
   {
-    id: "quantity",
-    label: 'Quantity',
+    id: "status",
+    label: 'Status',
     minWidth: 170,
     align: 'right',
   },
-  { id: 'Details', label: 'Details', minWidth: 100 },
   {
     id: 'Actions',
     label: 'Actions',
@@ -39,14 +36,18 @@ const columns = [
     align: 'right',
   },
 ];
-export default function ViewAllProducts() {
-  const [openModal, setOpenModal] = React.useState(false);
+export default function ViewAllOrders() {
+  const [openModal, setOpenModal] = useState(false);
 
-  const [EditRecord, setEditRecord] = React.useState(false);
+  const [EditRecord, setEditRecord] = useState(false);
 
-  const [showDetails, setShowDetails] = React.useState(false);
+  const [showDetails, setShowDetails] = useState(false);
   
   const [singleRecord, setSingleRecord] = useState()
+
+  const [records, setRecords] = useState()
+  const [loading, setLoading] = useState(false)
+
   function handleClose(){
     setEditRecord(false)
     setShowDetails(false)
@@ -54,16 +55,14 @@ export default function ViewAllProducts() {
     setOpenModal(false)
     }
 
-    const [records, setRecords] = useState()
-    const [loading, setLoading] = useState(false)
-    const getAllProducts = async() => {
+ 
+    const getAllMeals = async() => {
         let list=[]
         setLoading(true)
-        const querySnapshot =await getService("shop")
+        const querySnapshot =await getService("orders")
 
         querySnapshot.forEach((doc) => {
           list.push({id:doc.id,
-              imageContain:{image:doc.data().image,title:doc.data().name},
               ...doc.data()})
                 });
         setRecords(list)
@@ -71,18 +70,35 @@ export default function ViewAllProducts() {
             };
 
     useEffect(()=>{
-      getAllProducts()
+       getAllMeals()
        },[ ])
       
-      const deleteMeal = async (record,url) => {        
-        await deleteService("shop",record.id)
+      const deleteMeal = async (record,url) => {   
+        console.log(records)
+        console.log(record)     
         if(url){
           deleteAsset(url)
         }
+        await deleteService("orders",record.id)
         const result =records.filter((item)=>item.id!==record.id)
         setRecords(result)
+        console.log(result)
       };
 
+      const updateStatus = async (id,status) => {
+        const newStatus= status==="pending"?"delivered":"pending";
+        await updateService('orders',id,{status:newStatus})
+
+        const updatedData = records.map((item) => {
+            
+          if(item.id === id){
+              item.status=newStatus
+          } 
+          return item
+          
+          });   
+        setRecords(updatedData) 
+    }
     return (<>          
 
 {   loading ? (
@@ -96,54 +112,30 @@ export default function ViewAllProducts() {
 
     records ?
     <>
-     <Modal
+       <Modal
         open={openModal}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          {/* <Paper sx={{width:'500',height:'500'}}> */}
-        { showDetails ?
-            <SingleProductDetails data={singleRecord}/>
-                   :
-            EditRecord?
-            <AddProduct 
-            
-            records={records}
-            setRecords={setRecords}
-            handleModal={handleClose}
-            getAllProducts={getAllProducts}
-            recordForEdit={singleRecord}
-            /> :
-            <AddProduct  
-            
-            records={records}
-            setRecords={setRecords}
-            handleModal={handleClose}
-            getAllProducts={getAllProducts}
-            recordForEdit={null}
-            />
-            
+        { showDetails &&
+            <SingleOrderDetails data={singleRecord}/>            
           }
-            
-
-          {/* </Paper> */}
         </Box>
       </Modal>
- 
     <DataTable 
     columns={columns}
      rows={records}
-     editButton={true}
+     editButton={false}
      deleteButton={true}
-     secondTopButton={"Add New Product"}
+     addNewButton={true}
      setOpenModal={setOpenModal}
-    setEditRecord={setEditRecord}
+    // setEditRecord={setEditRecord}
     setShowDetails={setShowDetails}
     setSingleRecord={setSingleRecord}
     deleteRecord={deleteMeal}
-    updateStatus={false}
+    updateStatus={updateStatus}
      />
           </>:
           <></>

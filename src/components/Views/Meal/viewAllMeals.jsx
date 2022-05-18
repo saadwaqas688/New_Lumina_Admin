@@ -84,7 +84,6 @@ export default function ViewAllMeals() {
        },[ ])
       
       const deleteMeal = async (id,url) => {        
-        await deleteService("shop",id)
         if(url){
           deleteAsset(url)
         }
@@ -160,7 +159,8 @@ export default function ViewAllMeals() {
      rows={records}
      editButton={true}
      deleteButton={true}
-     addNewButton={true}
+    //  addNewButton={true}
+     secondTopButton={"Add New Class"}
      setOpenModal={setOpenModal}
     setEditRecord={setEditRecord}
     setShowDetails={setShowDetails}

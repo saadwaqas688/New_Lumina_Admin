@@ -11,6 +11,7 @@ import ViewAllClassCategories from "../components/Views/ClassCategories/viewAllC
 import ViewAllClasses from "../components/Views/Classes/viewAllClasses";
 import Login from "../components/Views/Login/login";
 import ViewAllMeals from "../components/Views/Meal/viewAllMeals";
+import ViewAllOrders from "../components/Views/Orders/viewAllOrders";
 import ViewAllProducts from "../components/Views/Product/viewAllProducts";
 import ViewAllUsers from "../components/Views/Users/viewAllUsers";
 import ViewAllWorkOuts from "../components/Views/WorkOuts/viewAllWorkOuts";
@@ -34,6 +35,8 @@ const ApplicationRoutes = () => {
 <Route path="/classes" element={<ViewAllClasses/>} />
 <Route path="/classesCategories" element={<ViewAllClassCategories/>} />
 <Route path="/blogs" element={<ViewAllBlogs/>} />
+<Route path="/orders" element={<ViewAllOrders/>} />
+
 
     </Route>
 </Routes>

@@ -3,6 +3,7 @@ import { useField, useFormikContext } from 'formik';
 import { MenuItem, TextField } from '@mui/material';
 
 const Select = ({
+  isObject,
   name,
   options,
   ...otherProps
@@ -32,7 +33,7 @@ const Select = ({
     <TextField {...configSelect}>
            {options.map((item) => {
         return (
-          <MenuItem key={item.id} value={item}>
+          <MenuItem key={item.id} value={isObject?item:item.value}>
             {item.value}
           </MenuItem>
         )

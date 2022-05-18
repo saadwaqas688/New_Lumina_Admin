@@ -323,6 +323,7 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
                                               label="Equipment"
                                               size="small"
                                               options={equipments}
+                                              isObject={true}
                                             />
                                         </div>
                                       </Grid>

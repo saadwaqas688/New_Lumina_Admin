@@ -56,9 +56,7 @@ const AddProduct = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
         .required("Required"),
       price: Yup.number().integer().required("Required"),
       discountPrice: Yup.number().integer().required("Required"), 
-      quantity: Yup.number()
-        .integer()
-        .typeError("Please enter a valid phone number")
+      quantity: Yup.string()
         .required("Required"),
 
       description: Yup.string().required("Required"),
@@ -250,6 +248,7 @@ const AddProduct = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
                           label="Quantity"
                           size="small"
                           options={quantity}
+                          isObject={false}
                         />
                       </Grid>
 
