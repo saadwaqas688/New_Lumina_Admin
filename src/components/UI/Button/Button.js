@@ -1,105 +1,20 @@
-
-// import { useFormikContext } from 'formik';
-
-// const Button = ({
-//   children,
-//   ...otherProps
-// }) => {
-//   // const { submitForm } = useFormikContext();
-
-//   // const handleSubmit = () => {
-//   //   submitForm();
-//   // }
-
-//   const configButton = {
-//     variant: 'contained',
-//     // color: 'pink',
-//     fullWidth: true,
-//     // onClick: handleSubmit
-//   }
-
-//   return (
-//     <MaterialButton
-//       {...configButton}
-//     >
-//       {children}
-//     </MaterialButton>
-//   );
-// };
-
-// export default Button;
-
-
-// const useStyles = makeStyles(theme => ({
-//     root: {
-//         minWidth: 0,
-//         margin: theme.spacing(0.5),
-//         '&:hover': {
-//             backgroundColor: '#ffb3b3',
-//             color: 'white',
-//         }
-//     },
-//     secondary: {
-//         backgroundColor:'#ff6699',//hot pink
-//         '& .MuiButton-label': {
-//             color: '#ffe6e6',//light pink
-//         }
-//     },
-//     primary: {
-//         backgroundColor: '#ff6699',
-//         '& .MuiButton-label': {
-//             color: 'white',
-//         }
-//     },
-// }))
 import React from 'react';
 import MaterialButton from '@mui/material/Button';
 import { styled } from '@mui/system';
-// import { makeStyles  } from '@mui/styles'
-// const useStyles = makeStyles(theme => ({
-//     root: {
-//         minWidth: 0,
-//         margin: theme.spacing(0.5),
-//         '&:hover': {
-//             backgroundColor: '#ffb3b3',
-//             color: 'white',
-//         }
-//     },
-//     secondary: {
-//         backgroundColor:'#ff6699',//hot pink
-//         '& .MuiButton-label': {
-//             color: '#ffe6e6',//light pink
-//         }
-//     },
-//     primary: {
-//         backgroundColor: '#ff6699',
-//         '& .MuiButton-label': {
-//             color: 'white',
-//         }
-//     },
-// }))
 
-       const MaterialButtonWrapper=styled(MaterialButton)(({theme,primary,secondary})=>({
+       const MaterialButtonWrapper=styled(MaterialButton)(({theme,
+                                                         customcolor,
+                                                         custombgcolor,
+                                                      customHoverBgColor,
+                                                     customHovercolor})=>({
                    minWidth: 0,
                  margin: theme.spacing(0.5),
-                 backgroundColor:'#ff6699',//hot pink
+                 color:customcolor,
+                 backgroundColor:custombgcolor ? custombgcolor:"#ff6699",//hot pink
                 '&:hover': {
-            backgroundColor: '#ffb3b3',
-            color: 'white'
+            backgroundColor: customHoverBgColor?customHoverBgColor:'#ffb3b3',
+            color:customHovercolor?customHovercolor:'white'
                 },
-    //             secondary: {
-    //     backgroundColor:'#ff6699',//hot pink
-    //     '& .MuiButton-label': {
-    //         color: '#ffe6e6',//light pink
-    //     }
-    // },
-    // primary: {
-    //     backgroundColor: '#ff6699',
-    //     '& .MuiButton-label': {
-    //         color: 'white',
-    //     }
-    // },
-        
        }))
 
        
@@ -107,15 +22,9 @@ import { styled } from '@mui/system';
  const Button=(props )=> {
 
     const { color, children, onClick,variant } = props;
-    // const classes = useStyles();
     return (
         <MaterialButtonWrapper
             color={color}
-            // sx={{backgroundColor:'#ff6699', '&:hover': {
-            //     backgroundColor: '#ffb3b3',
-            //     color: 'white',
-            // }}}
-
             onClick={onClick}
             variant = {variant}
             {...props}

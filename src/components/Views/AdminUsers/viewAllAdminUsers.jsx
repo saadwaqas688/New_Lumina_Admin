@@ -17,17 +17,18 @@ const style = {
     borderRadius: 2,
   };
 const columns = [
-  { id: 'email', label: 'Email', minWidth: 100 }, 
-  { id: 'time', label: 'Time', minWidth: 100 },
+  { id: 'email', label: 'Email', minWidth: 100,align: 'center' }, 
+  { id: 'time', label: 'Time', minWidth: 100,align: 'center'},
   {
     id: "status",
     label: 'Status',
     minWidth: 170,
-    align: 'right',
+    align: 'center',
   },
 ];
 export default function ViewAllAdminUsers() {
-  const [openModal, setOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState(false); 
+  const [statusButtonColor, setStatusButtonColor] = useState(false); 
 
   function handleClose(){
     setOpenModal(false)
@@ -53,6 +54,12 @@ export default function ViewAllAdminUsers() {
        },[ ])
       
           const updateStatus = async (id,status) => {
+            console.log(status)
+            if(status==="blocked"){
+              setStatusButtonColor("#ffccd9")
+            }else{
+              setStatusButtonColor(null)
+            }
           const newStatus= status==="blocked"?"active":"blocked";
           await updateService('adminUsers',id,{status:newStatus})
           const updatedData = records.map((item) => {
@@ -65,6 +72,7 @@ export default function ViewAllAdminUsers() {
             });   
           setRecords(updatedData) 
       }
+     console.log(statusButtonColor) 
     return (<>          
 
 {   loading ? (
@@ -102,6 +110,7 @@ export default function ViewAllAdminUsers() {
      deleteButton={false}
      addNewButton={true}
      updateStatus={updateStatus}
+     statusButtonColor={statusButtonColor}
      />
           </>:
           <></>

@@ -10,7 +10,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "50%",
-   height:"50%",
+   height:"80%",
   overflow:'scroll',
   bgcolor: "background.paper",
   border: "2px solid #fbbe36",
@@ -39,8 +39,6 @@ const columns = [
 export default function ViewAllOrders() {
   const [openModal, setOpenModal] = useState(false);
 
-  const [EditRecord, setEditRecord] = useState(false);
-
   const [showDetails, setShowDetails] = useState(false);
   
   const [singleRecord, setSingleRecord] = useState()
@@ -49,7 +47,6 @@ export default function ViewAllOrders() {
   const [loading, setLoading] = useState(false)
 
   function handleClose(){
-    setEditRecord(false)
     setShowDetails(false)
     setSingleRecord(null)
     setOpenModal(false)
@@ -131,7 +128,6 @@ export default function ViewAllOrders() {
      deleteButton={true}
      addNewButton={true}
      setOpenModal={setOpenModal}
-    // setEditRecord={setEditRecord}
     setShowDetails={setShowDetails}
     setSingleRecord={setSingleRecord}
     deleteRecord={deleteMeal}

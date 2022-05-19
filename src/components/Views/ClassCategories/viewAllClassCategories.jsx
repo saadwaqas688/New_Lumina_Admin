@@ -23,14 +23,14 @@ const style = {
 };
 
 const columns = [
-  { id: 'imageContain', label: 'Title', minWidth: 170 },
+  { id: 'imageContain', label: 'Title', minWidth: 100, align: 'center'},
 
-  { id: 'Details', label: 'Details', minWidth: 100 },
+  { id: 'Details', label: 'Details', minWidth: 100, align: 'center'},
   {
     id: 'Actions',
     label: 'Actions',
-    minWidth: 170,
-    align: 'right',
+    minWidth: 100,
+    align: 'center',
   },
 ];
 export default function ViewAllClassCategories() {
@@ -97,7 +97,6 @@ export default function ViewAllClassCategories() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          {/* <Paper sx={{width:'500',height:'500'}}> */}
         { showDetails ?
         <SingleCategoryDetails data={singleRecord}/>
                    :
@@ -121,8 +120,6 @@ export default function ViewAllClassCategories() {
             
           }
             
-
-          {/* </Paper> */}
         </Box>
       </Modal>
  

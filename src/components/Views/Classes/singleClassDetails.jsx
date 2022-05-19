@@ -9,6 +9,7 @@ const SingleClassDetails = ({ data ,getAllClasses, handleModal}) => {
   const [linkField, setLinkField] = useState(false);
   const [link, setLink] = useState(null);
   const [id, setId] = useState(null);
+  const [loading, setLoading] = useState(null);
   const [time, setTime] = useState(null);
 
 
@@ -22,6 +23,7 @@ function handleClick(time,id){
   setTime(time)
 }
 async function handleDelete(classTime,userId){
+  setLoading(true)
   const docRef = doc(db, "classCategories", data.category.id);
   const docSnap = await getDoc(docRef);
   
@@ -34,9 +36,7 @@ async function handleDelete(classTime,userId){
             return user
           }     
   })
-  let list=docSnap.data()
-  console.log("listWaqas",list)
-   
+  let list=docSnap.data()   
   const finalData=list.classes.map((item)=>{
     if(item.id===data.id){
       item.users=newData
@@ -47,17 +47,15 @@ async function handleDelete(classTime,userId){
   })
 
   list.classes=finalData
-
-  console.log('finalData',list)
-
     await updateService("classCategories",data.category.id,list)
     getAllClasses()
     handleModal()
+    setLoading(false)
 }
    
 }
 async function handleSubmit(){ 
-
+     setLoading(true)
   const docRef = doc(db, "classCategories", data.category.id);
   const docSnap = await getDoc(docRef);
   
@@ -88,13 +86,15 @@ async function handleSubmit(){
     await updateService("classCategories",data.category.id,list)
     getAllClasses()
     handleModal()
+    setLinkField(false)
+    setLoading(false)
+
 }
     
 }
  function submit(e){
   e.preventDefault()
   handleSubmit()
-  setLinkField(false)
 }
   return (
     <Paper elevation={6}>
@@ -203,7 +203,7 @@ async function handleSubmit(){
           >
             {!linkField ? "Classes Sheduled" : "Make Zoom Link For Classs"}
           </Typography>
-          {!linkField &&
+          {(!linkField && data.users.length>0)?(
             data.users.map((item, index) => {
               return (
                 <Grid container key={index}>
@@ -224,17 +224,19 @@ async function handleSubmit(){
                           variant="contained"
                           onClick={() => handleClick(item.dateTime,item.id)}
                         >
-                          Generate Link
+                            <Typography variant="body1">
+                              <strong>Generate Link</strong>
+                                </Typography>
                         </Button>:
-                      //    <Typography variant="h6" color="text.secondary">
-                      //    Class Is In Progress
-                      //  </Typography>
                       <Button
+                          custombgcolor="#ff1a53"
                           size="small"
                           variant="contained"
                           onClick={() => handleDelete(item.dateTime,item.id)}
                         >
-                          Delete Link
+                             <Typography variant="body1">
+                                  <strong>{loading?"please wait .....":'Delete Link'}</strong>
+                                </Typography>
                         </Button>
                        }
                       </Box>
@@ -242,7 +244,13 @@ async function handleSubmit(){
                   }
                 </Grid>
               );
-            })}
+            })
+            ): !linkField ?
+            <Typography variant="h6" color="text.secondary" sx={{mt:'20px'}}>
+            No Classes Sheduled
+            </Typography>:
+            <></>
+            }
           {linkField && (
             <>
               <TextField
@@ -254,11 +262,14 @@ async function handleSubmit(){
                 sx={{ marginTop: "10px" }}
               />
               <Button
-                sx={{ marginTop: "10px", width: "30%" }}
+                sx={{ marginTop: "10px" }}
                 variant="contained"
                 onClick={submit}
               >
-                submit
+                  <Typography variant="body1">
+                                  <strong>{loading?"please wait .....":'submit'}</strong>
+                                </Typography>
+                
               </Button>
             </>
           )}

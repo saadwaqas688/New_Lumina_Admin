@@ -21,15 +21,15 @@ const style = {
   borderRadius: 2,
 };
 const columns = [
-  { id: 'imageContain', label: 'Title', minWidth: 170 },
-  { id: 'classCategory', label: 'Category', minWidth: 100 },
-  { id: 'startingDate', label: 'Starting Date', minWidth: 100 },
-  { id: 'Details', label: 'Details', minWidth: 100 },
+  { id: 'imageContain', label: 'Title', minWidth: 100,align: 'center' },
+  { id: 'classCategory', label: 'Category', minWidth: 100,align: 'center' },
+  { id: 'startingDate', label: 'Starting Date', minWidth: 100,align: 'center' },
+  { id: 'Details', label: 'Details', minWidth: 100,align: 'center'},
   {
     id: 'Actions',
     label: 'Actions',
-    minWidth: 170,
-    align: 'right',
+    minWidth: 100,
+    align: 'center',
   },
 ];
 
