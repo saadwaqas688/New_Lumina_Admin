@@ -107,7 +107,7 @@ export default function ViewAllClassCategories() {
             records={records}
             setRecords={setRecords}
             handleModal={handleClose}
-            getAllMeals={getAllCategories}
+            getAllCategories={getAllCategories}
             recordForEdit={singleRecord}
             /> :
             <AddClassCategory  
@@ -115,7 +115,7 @@ export default function ViewAllClassCategories() {
             records={records}
             setRecords={setRecords}
             handleModal={handleClose}
-            getAllMeals={getAllCategories}
+            getAllCategories={getAllCategories}
             recordForEdit={null}
             />
             

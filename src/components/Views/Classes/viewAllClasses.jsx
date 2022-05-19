@@ -64,7 +64,6 @@ export default function ViewAllClasses() {
           list.push({id:doc.id,
               ...doc.data()})
                 });
-       console.log('list',list)
                 list.map((item)=>{
                   return(
                   
@@ -197,7 +196,6 @@ export default function ViewAllClasses() {
   <DataTable 
   columns={columns}
    rows={records}
-   editButton={true}
    deleteButton={true}
    topLinkButton={"View All Categories"}
    secondTopButton={"Add New Class"}
