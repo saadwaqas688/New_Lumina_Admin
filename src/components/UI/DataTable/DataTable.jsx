@@ -129,7 +129,7 @@ export default function DataTable({
                               </Box>
                             </TableCell>
                           );
-                        } else if (column.id === "time") {
+                        } else if (column.id === "time" || column.id === "startingDate") {
                           return (
                             <TableCell key={column.id} align={column.align}>
                                <Typography variant="body1">

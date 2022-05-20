@@ -68,10 +68,10 @@ export default function ViewAllClasses() {
                   return(
                   
                  item.classes.map((item)=> {
+                   console.log(item.startingDate)
                    return(
                      item.imageContain={image:item.image,title:item.title},
                      item.classCategory=item.category.value,
-                     item.startingDate=(new Date(item.startingDate.toDate())).toDateString(),
                     newList.push(item)
                    )
                   }))
@@ -166,7 +166,6 @@ export default function ViewAllClasses() {
       <SingleClassDetails  handleModal={handleClose} getAllClasses={getAllClasses} data={singleRecord}/>                 :
           EditRecord?
           <AddClass  
-          
           records={records}
           setRecords={setRecords}
           handleModal={handleClose}
@@ -197,6 +196,7 @@ export default function ViewAllClasses() {
   columns={columns}
    rows={records}
    deleteButton={true}
+   editButton={false}
    topLinkButton={"View All Categories"}
    secondTopButton={"Add New Class"}
    setOpenModal={setOpenModal}

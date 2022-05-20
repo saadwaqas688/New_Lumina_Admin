@@ -44,7 +44,7 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
         description: Yup.string().required("Required"),
         category: Yup.string().required("Required"),
         targetArea:Yup.string().required("Required"),
-          startingDate: Yup.date().nullable(),
+          // startingDate: Yup.date().nullable(),
           equipments: Yup.array()
           .of(
             Yup.string("String is Required!")
@@ -94,9 +94,12 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
 	};
   async function handelclick(values) {
     setloader(true);
+    console.log("value",values.startingDate.seconds)
+    console.log("type ", typeof values.startingDate)
 
     try {
       if (values.file[2]) {
+        
         const value = values.file[2];
         const name2 = new Date().getTime() + "" + value.name;
         const storageRef = ref(storage, "photos/" + name2);
@@ -119,7 +122,7 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
             }
           },
           (error) => {
-            console.log(error);
+            alert("error occur")
             setloader(false);
           },
           () => {
@@ -127,26 +130,29 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
               async (downloadURL) => {
                 const filedata = [values.file[0], values.file[1]];
                 const record = {
-                  id:uniqueID(),
                   title: values.title,
                   image: downloadURL,
                   description:values.description,
                   targetArea:values.targetArea,
-                  startingDate:values.startingDate,
+                  startingDate:values.startingDate.seconds?new Date(values.startingDate.seconds*1000):values.startingDate,
                   equipments:values.equipments,
                   users:[],
                   category:values.category,
                   file: filedata,
                 };
-                if (recordForEdit) {
+                if (!recordForEdit) {
+                  record.id=uniqueID()
+                }
                   const docRef = doc(db, "classCategories", values.category.id);
                   const docSnap = await getDoc(docRef);
-                  
                   if (docSnap.exists()) {
                   console.log("Document data viky:", docSnap.data());
                    let data=[]
                    let list=docSnap.data()
-                   list.classes.map((item)=>{
+                   if(!recordForEdit){
+                    list.classes.push(record)
+                   }else{
+                    list.classes.map((item)=>{
                       if(item.id===values.id){
                         data.push(record)
                       }else{
@@ -154,54 +160,20 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
                       }
                     })
                      list.classes=data
-                    // list.classes[index]=record
+                   }
+                
                     await updateService("classCategories",values.category.id,list)
-                    // console.log("Document data firday:", docSnap.data());
-                    // setData(docSnap.data())
-                    // setLoading(false)
-              
+                    handleModal();
+                    getAllClasses()
                   } else {
-                    console.log("No such document!");
-                    // setLoading(false)
+                    setloader(false);
+                    alert("Error Occur")
                   }
-                  // await updateService("test",recordForEdit.id,record)
-                  // await postService(`test/${values.category.id}/class`,record)
-                  setloader(false);
-                  handleModal();
-                  getAllClasses()
-                  
-                  // await updateService("classCategories",recordForEdit.id,record)
-                  // setloader(false);
-                  // handleModal();
-                  // getAllClasses()
-                } else {
+             
+       
+  
 
-                  const docRef = doc(db, "classCategories", values.category.id);
-                  const docSnap = await getDoc(docRef);
-                  console.log('docSnap',docSnap)
-                  
-                  if (docSnap.exists()) {
-                  console.log("Document data viky:", docSnap.data());
-
-
-                    let list=docSnap.data()
-                    list.classes.push(record)
-                    await updateService("classCategories",values.category.id,list)
-                    // console.log("Document data firday:", docSnap.data());
-                    // setData(docSnap.data())
-                    // setLoading(false)
-              
-                  } else {
-                    console.log("No such document!");
-                    // setLoading(false)
-                  }
-                  // await updateService("test",recordForEdit.id,record)
-                  // await postService(`test/${values.category.id}/class`,record)
-                  setloader(false);
-                  handleModal();
-                  getAllClasses()
-
-                }
+                
               }
             );
           }
@@ -216,7 +188,7 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
           category:values.category,
           equipments:values.equipments,
           users:[],
-          startingDate:values.startingDate,
+          startingDate:values.startingDate.seconds?new Date(values.startingDate.seconds*1000):values.startingDate,
           file: values.file,
         };
 
@@ -235,23 +207,17 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
             }
           })
            list.classes=data
-          // list.classes[index]=record
           await updateService("classCategories",values.category.id,list)
-          // console.log("Document data firday:", docSnap.data());
-          // setData(docSnap.data())
-          // setLoading(false)
-    
         } else {
-          console.log("No such document!");
-          // setLoading(false)
+          alert("error occur")
+          setloader(false);
         }
-        // await updateService("classCategories",recordForEdit.id,record)
         setloader(false);
         handleModal();
         getAllClasses()
       }
     } catch (error) {
-      console.log("catchError", error);
+      alert("error Occur")
     }
   }
 
@@ -276,14 +242,13 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
                 onSubmit={(values) => handelclick(values)}
                 render={({ values, errors, touched,submitForm}) => (
                   <>
-                  {console.log(values)}
                   <Form>
                     <Grid container spacing={2}>
                       <Grid item xs={6}>
                         <Textfield name="title" label="Title" size="small" />
                       </Grid>
                       <Grid item xs={6}>
-                        < DateAndTimePicker  value={values.startingDate} name="startingDate" size="small" />
+                        < DateAndTimePicker  value={values.startingDate.seconds?new Date(values.startingDate.toDate()).toDateString():values.startingDate} name="startingDate" size="small" />
 
                       </Grid>
                       <Grid item xs={6}>

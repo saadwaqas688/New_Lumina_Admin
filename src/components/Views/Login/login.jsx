@@ -29,10 +29,6 @@ function handlePassword(e){
     })
     .catch((error) => {
       alert(error.message)
-      // const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log('error',error.message)
-      alert(errorMessage)
     });
 }
       

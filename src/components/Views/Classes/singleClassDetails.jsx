@@ -165,7 +165,7 @@ async function handleSubmit(){
                 color="text.secondary"
                 sx={{ mt: "20px" }}
               >
-                {data.startingDate}
+                { new Date(data.startingDate.toDate()).toDateString()}
               </Typography>
             </Box>
             <Box

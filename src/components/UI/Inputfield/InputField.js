@@ -60,7 +60,7 @@ const Inputfield = ({
 {configTextfield.error && <div>{configTextfield.helperText}</div>}
 
 <label htmlFor="raised-button-file">
-    <Button  variant="contained">
+    <Button  variant="contained" component="span">
        {video?"Upload Video":"Upload Image"}
      </Button>
 </label> 
