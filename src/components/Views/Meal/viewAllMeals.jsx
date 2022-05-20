@@ -84,12 +84,12 @@ export default function ViewAllMeals() {
        getAllMeals()
        },[ ])
       
-      const deleteMeal = async (id,url) => {        
+      const deleteMeal = async (record,url) => {        
         if(url){
           deleteAsset(url)
         }
-        await deleteService("meal",id)
-        const result =records.filter((item)=>item.id!==id)
+        await deleteService("meal",record.id)
+        const result =records.filter((item)=>item.id!==record.id)
         setRecords(result)
       };
 
@@ -161,7 +161,7 @@ export default function ViewAllMeals() {
      editButton={true}
      deleteButton={true}
     //  addNewButton={true}
-     secondTopButton={"Add New Class"}
+     secondTopButton={"Add Meal"}
      setOpenModal={setOpenModal}
     setEditRecord={setEditRecord}
     setShowDetails={setShowDetails}

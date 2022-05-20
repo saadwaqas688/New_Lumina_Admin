@@ -106,6 +106,7 @@ export default function ViewAllAdminUsers() {
      columns={columns}
      rows={records}
      editButton={false}
+     firstTopButton={"Add New User as Admin"}
      setOpenModal={setOpenModal}
      deleteButton={false}
      addNewButton={true}

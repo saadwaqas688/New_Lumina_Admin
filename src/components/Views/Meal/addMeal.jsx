@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Form, FieldArray } from "formik";
-// import * as Yup from "yup";
-// import { makeStyles } from "@material-ui/core/styles";
-// import { Container, Grid, Paper} from "@material-ui/core";
+import * as Yup from "yup";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import Textfield from "../../UI/Textfield/TextField";
 import Inputfield from "../../UI/Inputfield/InputField";
@@ -11,26 +9,10 @@ import { Container, Grid,Paper } from "@mui/material";
 import Button from "../../UI/Button/Button";
 import { storage } from "../../../config /Firebase/firebase";
 import { postService, updateService } from "../../../services/services";
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     "& .MuiFormControl-root": {
-//       width: "80%",
-//       margin: theme.spacing(1),
-//     },
-//   },
 
-//   formWrapper: {
-//     padding: theme.spacing(3),
-
-//     height: "auto",
-//     margin: "auto",
-//     width: "80%",
-//     marginTop: "50px",
-//   },
-// }));
 const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
   const [editMode, setEditMode] = useState(false);
-  // const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif"];
+  const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif"];
 
   const INITIAL_FORM_STATE = {
     title: "",
@@ -39,98 +21,86 @@ const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
     carbs: "",
     status:'notFeatured',
     ingredients: [{ ingredient: '', quantity: '' }],
-    recipe: [" "],
+    recipe: [""],
     file: null,
     imageUrl: "",
     loader: false,
     error: null,
   };
 
-  // let FORM_VALIDATION = "";
+  let FORM_VALIDATION = "";
 
-  // if (editMode) {
-  //   FORM_VALIDATION = Yup.object().shape({
-  //     title: Yup.string()
-  //       .typeError("Please enter a valid phone number")
-  //       .required("Required"),
-  //       protiens: Yup.number().integer().required("Required"),
-  //       fats: Yup.number().integer().required("Required"), 
-  //       carbs: Yup.number().integer().required("Required"),
-  //       ingredients:Yup.array(
-  //         Yup.object({
-  //           ingredient: Yup.string()
-  //             .required('Ingredient name needed'),
-  //             // .min(3, 'Ingredient name needs to be at least 3 characters')
-  //             // .max(
-  //             //   10,
-  //             //   'Ingredient name needs to be at most 10 characters'
-  //             // ),
-  //           quantity: Yup.number()
-  //             .required('Quantity needed')
-  //             // .min(1, 'Quantity needs to be at least 1%')
-  //             // .max(100, 'Quantity can be at most 100%'),
-  //         })
-  //       )
-  //         .min(1, 'You need to provide at least 1 ingredient')
-  //         .max(3, 'You can only provide 3 ingredient'),
-  //         recipe: Yup.array()
-  //         .of(
-  //           Yup.string("String is Required!")
-  //             .min(4, "Too Short")
-  //             .max(20, "Too Long")
-  //             .required("Required")
-  //         )
-  //         .min(1, "Atleast One Social Media is Required!")
-  //         .required("Required"),
+  if (editMode) {
+    FORM_VALIDATION = Yup.object().shape({
+      title: Yup.string()
+        .typeError("Please enter a valid phone number")
+        .required("Required"),
+        protiens: Yup.number().integer().required("Required"),
+        fats: Yup.number().integer().required("Required"), 
+        carbs: Yup.number().integer().required("Required"),
+        ingredients:Yup.array(
+          Yup.object({
+            ingredient: Yup.string()
+              .required('Ingredient name needed'),
+              // .min(3, 'Ingredient name needs to be at least 3 characters')
+              // .max(
+              //   10,
+              //   'Ingredient name needs to be at most 10 characters'
+              // ),
+            quantity: Yup.number()
+              .required('Quantity needed')
+              // .min(1, 'Quantity needs to be at least 1%')
+              // .max(100, 'Quantity can be at most 100%'),
+          })
+        ),
+          recipe: Yup.array()
+          .of(
+            Yup.string("String is Required!")
 
-  //     // file: Yup.array()
-  //     //   .required("Required Field")
-  //   });
-  // } else {
-  //   FORM_VALIDATION = Yup.object().shape({
-  //     title: Yup.string()
-  //     .typeError("Please enter a valid phone number")
-  //     .required("Required"),
-  //     protiens: Yup.number().integer().required("Required"),
-  //     fats: Yup.number().integer().required("Required"), 
-  //     carbs: Yup.number().integer().required("Required"),
-  //     ingredients:Yup.array(
-  //       Yup.object({
-  //         ingredient: Yup.string()
-  //           .required('Ingredient name needed')
-  //           .min(3, 'Ingredient name needs to be at least 3 characters')
-  //           .max(
-  //             10,
-  //             'Ingredient name needs to be at most 10 characters'
-  //           ),
-  //         quantity: Yup.number()
-  //           .required('Quantity needed')
-  //           // .min(1, 'Quantity needs to be at least 1%')
-  //           // .max(100, 'Quantity can be at most 100%'),
-  //       })
-  //     )
-  //       .min(1, 'You need to provide at least 1 ingredient')
-  //       .max(3, 'You can only provide 3 ingredient'),
-  //       recipe: Yup.array()
-  //       .of(
-  //         Yup.string("String is Required!")
-  //           .min(4, "Too Short")
-  //           .max(20, "Too Long")
-  //           .required("Required")
-  //       )
-  //       .min(1, "Atleast One Social Media is Required!")
-  //       .required("Required"),
-  //     file: Yup.mixed()
-  //       .nullable()
-  //       .required("Required Field")
-  //       .test(
-  //         "type",
-  //         "Invalid file format selection",
-  //         (value) =>
-  //           !value || (value && SUPPORTED_FORMATS.includes(value[2].type))
-  //       ),
-  //   });
-  // }
+              .required("Required")
+          )
+          .min(1, "Atleast One Social Media is Required!")
+          .required("Required"),
+
+      // file: Yup.array()
+      //   .required("Required Field")
+    });
+  } else {
+    FORM_VALIDATION = Yup.object().shape({
+      title: Yup.string()
+      .typeError("Please enter a valid phone number")
+      .required("Required"),
+      protiens: Yup.number().integer().required("Required"),
+      fats: Yup.number().integer().required("Required"), 
+      carbs: Yup.number().integer().required("Required"),
+      ingredients:Yup.array(
+        Yup.object({
+          ingredient: Yup.string()
+            .required('Ingredient name needed'),
+          quantity: Yup.number()
+            .required('Quantity needed')
+            // .min(1, 'Quantity needs to be at least 1%')
+            // .max(100, 'Quantity can be at most 100%'),
+        })
+      ),
+        recipe: Yup.array()
+        .of(
+          Yup.string("String is Required!")
+            .required("Required")
+        )
+        .min(1, "Atleast One Social Media is Required!")
+        .required("Required"),
+      file: Yup.mixed()
+        .nullable()
+        .required("Required Field")
+        .test(
+          "type",
+          "Invalid file format selection",
+          (value) =>
+            !value || (value && SUPPORTED_FORMATS.includes(value[2].type))
+        ),
+    });
+  }
   const initialValues = recordForEdit ? recordForEdit : INITIAL_FORM_STATE;
   const [loader, setloader] = useState(false);
 
@@ -233,7 +203,7 @@ const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
                 initialValues={{
                   ...initialValues,
                 }}
-                // validationSchema={FORM_VALIDATION}
+                validationSchema={FORM_VALIDATION}
                 onSubmit={(values) => handelclick(values)}
                 render={({ values, errors, touched,submitForm}) => (
                   <>

@@ -17,17 +17,15 @@ import ViewAllUsers from "../components/Views/Users/viewAllUsers";
 import ViewAllWorkOuts from "../components/Views/WorkOuts/viewAllWorkOuts";
 
 const ApplicationRoutes = () => {
-//   const isLoggedIn = useSelector((state) => state.auth.loggedIn);
-
   return (
     <>
 <BrowserRouter>
 <Routes>
         <Route path="/" element={<Login />} />
-    <Route element={<SiteWrapper />}>
+    
 
-
-<Route path="/shop" element={<ViewAllProducts/>} />
+  <Route element={<SiteWrapper />}>
+  <Route path="/shop" element={<ViewAllProducts/>} />
 <Route path="/workOuts" element={<ViewAllWorkOuts/>} />
 <Route path="/meal" element={<ViewAllMeals/>} />
 <Route path="/adminUsers" element={<ViewAllAdminUsers/>} />
@@ -36,33 +34,9 @@ const ApplicationRoutes = () => {
 <Route path="/classesCategories" element={<ViewAllClassCategories/>} />
 <Route path="/blogs" element={<ViewAllBlogs/>} />
 <Route path="/orders" element={<ViewAllOrders/>} />
-
-
-    </Route>
+</Route>
 </Routes>
 </BrowserRouter>
-    {/* <BrowserRouter>
-    <SiteWrapper>
-    <Routes>
-
-
-      <Route path="/shop" element={<ViewAllProducts/>} />
-      <Route path="/workOuts" element={<ViewAllWorkOuts/>} />
-      <Route path="/meal" element={<ViewAllMeals/>} />
-      <Route path="/adminUsers" element={<ViewAllAdminUsers/>} />
-      <Route path="/users" element={<ViewAllUsers/>} />
-      <Route path="/classes" element={<ViewAllClasses/>} />
-      <Route path="/classesCategories" element={<ViewAllClassCategories/>} />
-      <Route path="/blogs" element={<ViewAllBlogs/>} />
-
-    </Routes>
-    </SiteWrapper>
-    <Routes>
-    <Route path="/" element={<Login/>} />
-    </Routes>
-
-    </BrowserRouter> */}
-
   </>
   );
 };
