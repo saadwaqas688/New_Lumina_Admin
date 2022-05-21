@@ -1,5 +1,4 @@
 import { Box, Grid, Paper, TextField, Typography } from "@mui/material";
-import { setISODay } from "date-fns/esm";
 import { doc, getDoc } from "firebase/firestore";
 import { useState } from "react";
 import { db } from "../../../config /Firebase/firebase";
@@ -235,7 +234,7 @@ async function handleSubmit(){
                           onClick={() => handleDelete(item.dateTime,item.id)}
                         >
                              <Typography variant="body1">
-                                  <strong>{loading?"please wait .....":'Delete Link'}</strong>
+                                  <strong>Delete Link</strong>
                                 </Typography>
                         </Button>
                        }

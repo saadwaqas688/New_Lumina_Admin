@@ -123,13 +123,20 @@ export default function ViewAllClasses() {
         const docSnap = await getDoc(docRef);
         
         if (docSnap.exists()) {
-        console.log("Document data viky: from viewallcallsses", docSnap.data());
+          try{
+            console.log("Document data viky: from viewallcallsses", docSnap.data());
 
-          let list=docSnap.data()
-         list.classes = list.classes.filter((i)=>i.id!==item.id);
-          await updateService("classCategories",item.category.id,list)
-            const result =records.filter((i)=>i.id!==item.id)
-            setRecords(result)
+            let list=docSnap.data()
+           list.classes = list.classes.filter((i)=>i.id!==item.id);
+            await updateService("classCategories",item.category.id,list)
+              
+              const result =records.filter((i)=>i.id!==item.id)
+              setRecords(result)
+          }catch(error){
+            
+          alert("error occur")
+          }
+     
     
         } else {
           console.log("No such document!");

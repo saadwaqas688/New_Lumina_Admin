@@ -10,12 +10,14 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import SideBar from '../SideBar/SideBar';
-import { Outlet } from 'react-router-dom';
+import {  Outlet, useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
-function SiteWrapper(props) {
-  const { window } = props;
+function SiteWrapper() {
+  // const { window } = props;
+  console.log('window',window)
+  const navigate = useNavigate();  
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -30,7 +32,15 @@ function SiteWrapper(props) {
     </div>
   );
 
-  const container = window !== undefined ? () => window().document.body : undefined;
+  React.useEffect(()=>{
+    if(typeof window !== 'undefined'){
+      const session = JSON.parse(localStorage.getItem('session'));
+      if(!session)(
+        navigate('/')
+      )
+    }
+  },[])
+  // const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -65,7 +75,7 @@ function SiteWrapper(props) {
       >
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
-          container={container}
+          // container={container}
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}

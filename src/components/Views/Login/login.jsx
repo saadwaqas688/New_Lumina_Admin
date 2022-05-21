@@ -12,6 +12,15 @@ const Login=()=>{
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();  
+
+    React.useEffect(()=>{
+      if(typeof window !== 'undefined'){
+        const session = JSON.parse(localStorage.getItem('session'));
+        if(session)(
+          localStorage.removeItem("session")
+        )
+      }
+    },[])
   function handleEmail(e){
     setEmail(e.target.value)
   }

@@ -92,6 +92,14 @@ import {
                 <ListItemText sx={{color:"purple"}} primary="Shop" />
               </ListItemButton>
             </ListItem>
+            <ListItem >
+              <ListItemButton component="a" href="/">
+                <ListItemIcon>
+                  <AccountBox sx={{color:'#ff6699' , fontSize:'40px'}}/>
+                </ListItemIcon>
+                <ListItemText sx={{color:"purple"}} primary="Log Out" />
+              </ListItemButton>
+            </ListItem> 
             {/* <ListItem >
               <ListItemButton component="a" href="#simple-list">
                 <ListItemIcon>

@@ -72,7 +72,6 @@ export default function ViewAllAdminUsers() {
             });   
           setRecords(updatedData) 
       }
-     console.log(statusButtonColor) 
     return (<>          
 
 {   loading ? (
