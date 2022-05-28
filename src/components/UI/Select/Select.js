@@ -3,7 +3,7 @@ import { useField, useFormikContext } from 'formik';
 import { MenuItem, TextField } from '@mui/material';
 
 const Select = ({
-  isObject,
+   type,
   name,
   options,
   ...otherProps
@@ -12,8 +12,10 @@ const Select = ({
   const [field, meta] = useField(name);
   const handleChange = evt => {
     const { value } = evt.target;
-    setFieldValue(name, value);
+
+      setFieldValue(name, value)
   };
+
 
   const configSelect = {
     ...field,
@@ -21,7 +23,7 @@ const Select = ({
     select: true,
     variant: 'outlined',
     fullWidth: true,
-    onChange: handleChange
+    onChange: handleChange,
   };
 
   if (meta && meta.touched && meta.error) {
@@ -29,11 +31,12 @@ const Select = ({
     configSelect.helperText = meta.error;
   }
 
+
   return (
     <TextField {...configSelect}>
            {options.map((item) => {
         return (
-          <MenuItem key={item.id} value={isObject?item:item.value}>
+          <MenuItem  key={item.id} value={type==="id"?item.id:type==="item"?item:item.value}>
             {item.value}
           </MenuItem>
         )

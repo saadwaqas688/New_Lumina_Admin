@@ -68,10 +68,14 @@ export default function ViewAllClasses() {
                   return(
                   
                  item.classes.map((item)=> {
-                   console.log(item.startingDate)
                    return(
                      item.imageContain={image:item.image,title:item.title},
                      item.classCategory=item.category.value,
+                     item.equipments=item.equipments.map((ele)=>{
+                       return ele.id
+                     }),
+
+
                     newList.push(item)
                    )
                   }))
@@ -102,8 +106,8 @@ export default function ViewAllClasses() {
                     
                           querySnapshot.forEach((doc) => {
                             list.push({id:doc.id,
-                                value:doc.data().name,
-                                ...doc.data()})
+                                value:doc.data().name,record:{id:doc.id,...doc.data()}
+                                })
                                   });
                           setEquipments(list)
                           setLoading(false)
@@ -124,7 +128,6 @@ export default function ViewAllClasses() {
         
         if (docSnap.exists()) {
           try{
-            console.log("Document data viky: from viewallcallsses", docSnap.data());
 
             let list=docSnap.data()
            list.classes = list.classes.filter((i)=>i.id!==item.id);
@@ -148,7 +151,6 @@ export default function ViewAllClasses() {
      
       };
 
-      console.log('records meray records',records)
     return (<>   
        
 {   loading ? (
@@ -203,7 +205,7 @@ export default function ViewAllClasses() {
   columns={columns}
    rows={records}
    deleteButton={true}
-   editButton={false}
+   editButton={true}
    topLinkButton={"View All Categories"}
    secondTopButton={"Add New Class"}
    setOpenModal={setOpenModal}

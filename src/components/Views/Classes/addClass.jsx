@@ -14,11 +14,7 @@ import Select from "../../UI/Select/Select";
 import * as Yup from "yup";
 import DateAndTimePicker from "../../UI/DateTimePicker/DateTimePicker";
 
-// 05/15/2022 09:00 pm
-// const categories=[{id:'1'},{id:'2'},{id:'3'}]
-// const equipments=[{id:'1'},{id:'2'},{id:'3'}]
-
-const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categories}) => {
+const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categories,records}) => {
   const [editMode, setEditMode] = useState(false);
   const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif"];
   const INITIAL_FORM_STATE = {
@@ -26,7 +22,7 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
     description:"",
     category:"",
     targetArea:"",
-    startingDate:new Date('2014-08-18T21:11:54'),
+    startingDate:new Date(),
     equipments: [" "],
     file: null,
     imageUrl: "",
@@ -44,8 +40,8 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
         description: Yup.string().required("Required"),
         category: Yup.string().required("Required"),
         targetArea:Yup.string().required("Required"),
-          // startingDate: Yup.date().nullable(),
-          equipments: Yup.array()
+        // startingDate: Yup.string().required("Required"),
+        equipments: Yup.array()
           .of(
             Yup.string("String is Required!")
               .min(4, "Too Short")
@@ -66,7 +62,7 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
       description: Yup.string().required("Required"),
       category: Yup.string().required("Required"),
       targetArea:Yup.string().required("Required"),
-      startingDate: Yup.date().nullable(),
+      // startingDate: Yup.string().required("Required"),
       equipments: Yup.array()
       .of(
         Yup.string("String is Required!")
@@ -94,9 +90,15 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
 	};
   async function handelclick(values) {
     setloader(true);
-    console.log("value",values.startingDate.seconds)
-    console.log("type ", typeof values.startingDate)
+    let equipmentsData=[]
+    if(values.equipments){
+      equipments.map((item)=>{
+        if(values.equipments.indexOf(item.id) !== -1)  {
+          equipmentsData.push(item.record)
+          }
 
+      })
+    }
     try {
       if (values.file[2]) {
         
@@ -122,7 +124,7 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
             }
           },
           (error) => {
-            alert("error occur")
+            alert("error occur uploading image")
             setloader(false);
           },
           () => {
@@ -130,12 +132,13 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
               async (downloadURL) => {
                 const filedata = [values.file[0], values.file[1]];
                 const record = {
+                  id:values.id,
                   title: values.title,
                   image: downloadURL,
                   description:values.description,
                   targetArea:values.targetArea,
                   startingDate:values.startingDate.seconds?new Date(values.startingDate.seconds*1000):values.startingDate,
-                  equipments:values.equipments,
+                  equipments:equipmentsData,
                   users:[],
                   category:values.category,
                   file: filedata,
@@ -167,7 +170,7 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
                     getAllClasses()
                   } else {
                     setloader(false);
-                    alert("Error Occur")
+                    alert("Error Occur while posting or updating")
                   }
              
        
@@ -186,7 +189,7 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
           targetArea:values.targetArea,
           description: values.description,
           category:values.category,
-          equipments:values.equipments,
+          equipments:equipmentsData,
           users:[],
           startingDate:values.startingDate.seconds?new Date(values.startingDate.seconds*1000):values.startingDate,
           file: values.file,
@@ -196,9 +199,10 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
         const docSnap = await getDoc(docRef);
         
         if (docSnap.exists()) {
-        console.log("Document data viky:", docSnap.data());
          let data=[]
          let list=docSnap.data()
+         console.log("Document data viky with out image:", list.classes);
+
          list.classes.map((item)=>{
             if(item.id===values.id){
               data.push(record)
@@ -207,9 +211,15 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
             }
           })
            list.classes=data
-          await updateService("classCategories",values.category.id,list)
+           console.log("list",list)
+           try{
+            await updateService("classCategories",values.category.id,list)
+
+           }catch(error){
+            alert(error)
+           }
         } else {
-          alert("error occur")
+          alert("error occur while updating")
           setloader(false);
         }
         setloader(false);
@@ -217,7 +227,7 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
         getAllClasses()
       }
     } catch (error) {
-      alert("error Occur")
+      alert("error Occur try catch",error)
     }
   }
 
@@ -242,6 +252,7 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
                 onSubmit={(values) => handelclick(values)}
                 render={({ values, errors, touched,submitForm}) => (
                   <>
+                  {console.log("values in form",values)}
                   <Form>
                     <Grid container spacing={2}>
                       <Grid item xs={6}>
@@ -251,15 +262,17 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
                         < DateAndTimePicker  value={values.startingDate.seconds?new Date(values.startingDate.toDate()).toDateString():values.startingDate} name="startingDate" size="small" />
 
                       </Grid>
-                      <Grid item xs={6}>
+          {!recordForEdit &&
+                      (<Grid item xs={6}>
                         <Select
                           name="category"
                           label="Category"
                           size="small"
                           options={categories}
-                          isObject={true}
+                          type="item"
                         />
-                      </Grid>
+                      </Grid>)
+                }
                       <Grid item xs={6}>
                         <Textfield name="targetArea" label="Target Area" size="small" />
                       </Grid>
@@ -292,7 +305,7 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
                                               label="Equipment"
                                               size="small"
                                               options={equipments}
-                                              isObject={true}
+                                              type="id"
                                             />
                                         </div>
                                       </Grid>

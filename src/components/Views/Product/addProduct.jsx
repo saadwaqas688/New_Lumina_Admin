@@ -10,24 +10,8 @@ import Inputfield from "../../UI/Inputfield/InputField";
 import { postService, updateService } from "../../../services/services";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../../config /Firebase/firebase";
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     "& .MuiFormControl-root": {
-//       width: "80%",
-//       margin: theme.spacing(1),
-//     },
-//   },
-
-//   formWrapper: {
-//     padding: theme.spacing(3),
-
-//     height: "auto",
-//     margin: "auto",
-//     width: "80%",
-//     marginTop: "50px",
-//   },
-// }));
-const quantity = [{id:1,value:1},{id:2,value:2},{id:3,value:3},{id:4,value:4}]
+const quantity = [{id:1,value:1},{id:2,value:2},{id:3,value:3},{id:4,value:4},{id:5,value:5},{id:6,value:6},
+  {id:7,value:7},{id:8,value:8},{id:9,value:9},{id:10,value:10}]
 
 
 const AddProduct = ({ recordForEdit, records,  handleModal,getAllProducts }) => {
@@ -248,7 +232,6 @@ const AddProduct = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
                           label="Quantity"
                           size="small"
                           options={quantity}
-                          isObject={false}
                         />
                       </Grid>
 
