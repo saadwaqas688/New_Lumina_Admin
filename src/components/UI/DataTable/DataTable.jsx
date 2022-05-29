@@ -27,6 +27,7 @@ export default function DataTable({
   setSingleRecord,
   deleteRecord,
   updateStatus,
+  setAddNote,
 }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -47,6 +48,10 @@ export default function DataTable({
     } else if (state === "details") {
       setShowDetails(true);
       setSingleRecord(record);
+    }else if (state === "Notes") {
+      setAddNote(true);
+      setSingleRecord(record);
+
     }
     setOpenModal(true);
   }
@@ -137,6 +142,21 @@ export default function DataTable({
                                 </Typography>
                             </TableCell>
                           );
+                        } else if (column.id === "Notes") {
+                          return (
+                            <TableCell key={column.id} align={column.align}>
+                              <Button
+                                variant="contained"
+                                onClick={() => {
+                                  openInPopup(row, "Notes");
+                                }}
+                              >
+                                <Typography variant="body1">
+                                  <strong>Add Notes</strong>
+                                </Typography>
+                              </Button>
+                            </TableCell>
+                          );
                         } else if (column.id === "Details") {
                           return (
                             <TableCell key={column.id} align={column.align}>
@@ -147,12 +167,13 @@ export default function DataTable({
                                 }}
                               >
                                 <Typography variant="body1">
-                                  <strong>View Details</strong>
+                                  <strong>Details</strong>
                                 </Typography>
                               </Button>
                             </TableCell>
                           );
-                        } else if (column.id === "status") {
+                        } 
+                        else if (column.id === "status") {
                           return (
                             <TableCell key={column.id} align={column.align}>
                               <Button

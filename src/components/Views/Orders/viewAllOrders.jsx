@@ -4,6 +4,7 @@ import { deleteAsset, deleteService, getService, updateService } from '../../../
 import DataTable from '../../UI/DataTable/DataTable';
 import Modal from "@mui/material/Modal";
 import SingleOrderDetails from './singleOrderDetails';
+import AddNotes from './addNotes';
 const style = {
   position: "absolute",
   top: "50%",
@@ -18,9 +19,25 @@ const style = {
   boxShadow: 24,
   borderRadius: 2,
 };
+
+const style2 = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "50%",
+   height:"55%",
+  overflow:'hidden',
+  bgcolor: "background.paper",
+  border: "2px solid #fbbe36",
+  p:4,
+  boxShadow: 24,
+  borderRadius: 2,
+};
 const columns = [
   { id: 'name', label: 'Name', minWidth: 170 },
   { id: 'email', label: 'Email', minWidth: 100 },
+  { id: 'Notes', label: 'Notes', minWidth: 170 },
   { id: 'Details', label: 'View Details', minWidth: 170 },
 
   {
@@ -40,20 +57,28 @@ export default function ViewAllOrders() {
   const [openModal, setOpenModal] = useState(false);
 
   const [showDetails, setShowDetails] = useState(false);
+
+  const [EditRecord, setEditRecord] = React.useState(false);
+
   
   const [singleRecord, setSingleRecord] = useState()
+
+  const [addNote, setAddNote] = useState()
+
 
   const [records, setRecords] = useState()
   const [loading, setLoading] = useState(false)
 
   function handleClose(){
+    setAddNote(false)
+    setEditRecord(false)
     setShowDetails(false)
     setSingleRecord(null)
     setOpenModal(false)
     }
 
  
-    const getAllMeals = async() => {
+    const getAllOrders = async() => {
         let list=[]
         setLoading(true)
         const querySnapshot =await getService("orders")
@@ -67,7 +92,7 @@ export default function ViewAllOrders() {
             };
 
     useEffect(()=>{
-       getAllMeals()
+      getAllOrders()
        },[ ])
       
       const deleteMeal = async (record,url) => {   
@@ -115,16 +140,32 @@ export default function ViewAllOrders() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
-        { showDetails &&
-            <SingleOrderDetails data={singleRecord}/>            
+        <Box sx={showDetails?style:style2}>
+        { showDetails ?
+            <SingleOrderDetails data={singleRecord}/>  :
+            EditRecord?
+            <AddNotes
+            records={records}
+            setRecords={setRecords}
+            handleModal={handleClose}
+            getAllOrders={getAllOrders}
+            id={singleRecord.id}
+            recordForEdit={singleRecord}
+            /> :
+            addNote?
+            <AddNotes handleModal={handleClose} 
+            getAllOrders={getAllOrders}  
+             id={singleRecord.id} 
+             
+             />:
+            <></>
           }
         </Box>
       </Modal>
     <DataTable 
     columns={columns}
      rows={records}
-     editButton={false}
+     editButton={true}
      deleteButton={true}
      addNewButton={true}
      setOpenModal={setOpenModal}
@@ -132,6 +173,9 @@ export default function ViewAllOrders() {
     setSingleRecord={setSingleRecord}
     deleteRecord={deleteMeal}
     updateStatus={updateStatus}
+    setAddNote={setAddNote}
+    setEditRecord={setEditRecord}
+    
      />
           </>:
           <></>

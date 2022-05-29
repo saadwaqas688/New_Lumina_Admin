@@ -24,7 +24,7 @@ const AddProduct = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
     discountPrice: "",
     quantity: "",
     description: "",
-    colors: [" "],
+    colors: ["red","green","blue"],
     file: null,
     imageUrl: "",
     loader: false,
@@ -44,15 +44,15 @@ const AddProduct = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
         .required("Required"),
 
       description: Yup.string().required("Required"),
-      colors: Yup.array()
-        .of(
-          Yup.string("String is Required!")
-            .min(4, "Too Short")
-            .max(20, "Too Long")
-            .required("Required")
-        )
-        .min(1, "Atleast One Social Media is Required!")
-        .required("Required"),
+      // colors: Yup.array()
+      //   .of(
+      //     Yup.string("String is Required!")
+      //       .min(4, "Too Short")
+      //       .max(20, "Too Long")
+      //       .required("Required")
+      //   )
+      //   .min(1, "Atleast One Social Media is Required!")
+      //   .required("Required"),
 
       // file: Yup.array()
       //   .required("Required Field")
@@ -70,15 +70,15 @@ const AddProduct = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
         .required("Required"),
 
       description: Yup.string().required("Required"),
-      colors: Yup.array()
-        .of(
-          Yup.string("String is Required!")
-            .min(4, "Too Short")
-            .max(20, "Too Long")
-            .required("Required")
-        )
-        .min(1, "Atleast One Social Media is Required!")
-        .required("Required"),
+      // colors: Yup.array()
+      //   .of(
+      //     Yup.string("String is Required!")
+      //       .min(4, "Too Short")
+      //       .max(20, "Too Long")
+      //       .required("Required")
+      //   )
+      //   .min(1, "Atleast One Social Media is Required!")
+      //   .required("Required"),
       file: Yup.mixed()
         .nullable()
         .required("Required Field")
@@ -130,7 +130,7 @@ const AddProduct = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
               async (downloadURL) => {
                 const filedata = [values.file[0], values.file[1]];
                 const record = {
-                  colors: values.colors,
+                  colors: ["red","green","blue"],
                   description: values.description,
                   image: downloadURL,
                   likedBy: [],
@@ -160,7 +160,7 @@ const AddProduct = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
         );
       } else {
         const record = {
-          colors: values.colors,
+          colors: ["red","green","blue"],
           description: values.description,
           image: values.image,
           likedBy: [],
@@ -235,7 +235,7 @@ const AddProduct = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
                         />
                       </Grid>
 
-                      <Grid item xs={12}>
+                      {/* <Grid item xs={12}>
                         <FieldArray
                           name="colors"
                           render={(arrayHelpers) => (
@@ -263,17 +263,6 @@ const AddProduct = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
                               )}
                               <>
                                 {values.colors.length > 1 && (
-                                  // <FormButton
-                                  //   style={{ marginRight: "10px" }}
-                                  //   color="secondary"
-                                  //   onClick={() =>
-                                  //     arrayHelpers.remove(
-                                  //       values.colors.length - 1
-                                  //     )
-                                  //   }
-                                  // >
-                                  //   Remove color
-                                  // </FormButton>
                                   <Button  style={{ marginRight: "10px" }}
                                   variant="contained"  color="primary" size='small'
                                      onClick={() =>
@@ -285,16 +274,6 @@ const AddProduct = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
                                        Remove Color
                                     </Button>
                                 )}
-                                {/* <FormButton
-                                  onClick={() =>
-                                    arrayHelpers.insert(
-                                      values.colors.length,
-                                      ""
-                                    )
-                                  }
-                                >
-                                  Add Color
-                                </FormButton> */}
                                   <Button variant="contained"  color="primary"  
                                     size='small'
                                      onClick={() =>
@@ -309,7 +288,7 @@ const AddProduct = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
                             </div>
                           )}
                         />
-                      </Grid>
+                      </Grid> */}
                       {values.error && <div>{values.error}</div>}
 
                       {

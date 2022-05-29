@@ -1,5 +1,9 @@
 import { Box, Grid, Paper, Typography } from "@mui/material";
 const SingleOrderDetails = ({data}) => {
+
+  function isEmpty(obj){
+return Object.keys(obj).length === 0 && obj.constructor === Object;
+  }
   return (
     <Paper elevation={0} >
   <Grid container   spacing={2} sx={{padding:'10px'}}>
@@ -77,6 +81,31 @@ const SingleOrderDetails = ({data}) => {
          </>)
        })
        }
+                                
+
+ {  !isEmpty(data.notes) &&
+          <>
+      <Typography variant="h5" color="text.secondary" sx={{mb:'10px',mt:'10px',textAlign:'center',fontWeight:'bold'}}>
+           Notes about the Order
+          </Typography>
+          <Grid container>
+         <Grid item xs={12}>
+         <Typography variant="body2" color="text.secondary" sx={{mt:'10px' ,ml:'20px',mr:'20px',fontSize:"20px"}}>
+         subject :   {data.notes.subject}
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{mt:'10px' ,ml:'20px',mr:'20px',fontSize:"20px"}}>
+         issue Id :  {data.notes.orderId}
+        </Typography>
+         <Typography variant="body2" color="text.secondary" sx={{mt:'10px' ,ml:'20px',mr:'20px',fontSize:"20px"}}>
+         Description :
+        </Typography>
+        <Typography variant="body1" color="text.secondary" sx={{mt:'10px',ml:'20px',mr:'20px',fontSize:"20px"}}>
+         {data.notes.description}
+        </Typography>
+          </Grid>
+          </Grid>
+          </>
+}
         </Grid>
  
 
