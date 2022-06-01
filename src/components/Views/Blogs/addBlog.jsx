@@ -13,7 +13,7 @@ import { postService, updateService } from "../../../services/services";
 const AddBlog = ({ recordForEdit,handleModal,getAllMeals }) => {
   const [editMode, setEditMode] = useState(false);
   const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif"];
-  const urlValidation = /^((ftp|http|https):\/\/)?(www.)?(?!.*(ftp|http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+((\/)[\w#]+)*(\/\w+\?[a-zA-Z0-9_]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/gm
+  // const urlValidation = /^((ftp|http|https):\/\/)?(www.)?(?!.*(ftp|http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+((\/)[\w#]+)*(\/\w+\?[a-zA-Z0-9_]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/gm
 
 
   const INITIAL_FORM_STATE = {
@@ -36,8 +36,8 @@ const AddBlog = ({ recordForEdit,handleModal,getAllMeals }) => {
         description: Yup.string()
         .typeError("Please enter a valid description")
         .required("Required"),
-        blogUrl: Yup.string().matches(urlValidation,'URL is not valid')
-        .required("Required"),
+        // blogUrl: Yup.string().matches(urlValidation,'URL is not valid')
+        // .required("Required"),
       // file: Yup.array()
       //   .required("Required Field")
     });
@@ -49,8 +49,8 @@ const AddBlog = ({ recordForEdit,handleModal,getAllMeals }) => {
       description: Yup.string()
       .typeError("Please enter a valid description")
       .required("Required"),
-      blogUrl: Yup.string().matches(urlValidation,'URL is not valid')
-      .required("Required"),
+      // blogUrl: Yup.string().matches(urlValidation,'URL is not valid')
+      // .required("Required"),
       file: Yup.mixed()
         .nullable()
         .required("Required Field")
