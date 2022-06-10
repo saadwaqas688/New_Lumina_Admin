@@ -25,6 +25,8 @@ const style = {
 const columns = [
   { id: 'imageContain', label: 'Title', minWidth: 100, align: 'center'},
 
+  { id: 'totalClasses', label: 'Classes', minWidth: 100, align: 'center'},
+
   { id: 'Details', label: 'Details', minWidth: 100, align: 'center'},
   {
     id: 'Actions',
@@ -58,6 +60,7 @@ export default function ViewAllClassCategories() {
         querySnapshot.forEach((doc) => {
           list.push({id:doc.id,
               imageContain:{image:doc.data().image,title:doc.data().name},
+              totalClasses:doc.data().classes.length,
               ...doc.data()})
                 });
         setRecords(list)
@@ -121,8 +124,7 @@ export default function ViewAllClassCategories() {
           }
             
         </Box>
-      </Modal>
- 
+      </Modal> 
     <DataTable 
     columns={columns}
      rows={records}

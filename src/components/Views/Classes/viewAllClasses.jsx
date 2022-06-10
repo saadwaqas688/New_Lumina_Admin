@@ -1,9 +1,10 @@
-import { Box, Modal, Skeleton } from '@mui/material';
+import { Box,Modal, Skeleton } from '@mui/material';
 import { doc, getDoc } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
 import { db } from '../../../config /Firebase/firebase'
 import { deleteAsset, getService, updateService } from '../../../services/services'
 import DataTable from '../../UI/DataTable/DataTable';
+import SelectMui from '../../UI/SelectMui/SelectMui';
 import AddClass from './addClass';
 import SingleClassDetails from './singleClassDetails';
 const style = {
@@ -46,11 +47,15 @@ export default function ViewAllClasses() {
     const [showDetails, setShowDetails] =useState(false);
     
     const [singleRecord, setSingleRecord] = useState()
+    const [selectedValue,setSelectedValue]=useState("All")
+    const [filterData,setFilterData]=useState(null)
   
     function handleClose(){
       setEditRecord(false)
       setShowDetails(false)
       setSingleRecord(null)
+      setSelectedValue("All")
+      setFilterData(null)
       setOpenModal(false)
       }   
     const getAllClasses = async() => {
@@ -135,6 +140,10 @@ export default function ViewAllClasses() {
               
               const result =records.filter((i)=>i.id!==item.id)
               setRecords(result)
+              if(filterData){
+                const result =filterData.filter((i)=>i.id!==item.id)
+                setFilterData(result)
+              }
           }catch(error){
             
           alert("error occur")
@@ -150,6 +159,18 @@ export default function ViewAllClasses() {
         }
      
       };
+
+      const handleChange = (event) => {
+        const value=event.target.value
+        setSelectedValue(value);
+        if(value==="All"){
+          setFilterData(null)
+        }else{
+          const result =records.filter((i)=>i.category.value===value)
+          setFilterData(result)
+        }  
+    };
+  
 
     return (<>   
        
@@ -175,8 +196,6 @@ export default function ViewAllClasses() {
       <SingleClassDetails  handleModal={handleClose} getAllClasses={getAllClasses} data={singleRecord}/>                 :
           EditRecord?
           <AddClass  
-          records={records}
-          setRecords={setRecords}
           handleModal={handleClose}
           getAllClasses={getAllClasses}
           equipments={equipments}
@@ -185,9 +204,6 @@ export default function ViewAllClasses() {
           />
            :
           <AddClass  
-          
-          records={records}
-          setRecords={setRecords}
           handleModal={handleClose}
           getAllClasses={getAllClasses}
           equipments={equipments}
@@ -196,14 +212,16 @@ export default function ViewAllClasses() {
           />
           
         }
-          
-
-        {/* </Paper> */}
-      </Box>
+                </Box>
     </Modal>
+    { categories &&
+
+<SelectMui options={categories} handleChange={handleChange} selectedValue={selectedValue}/>
+                }
+
   <DataTable 
   columns={columns}
-   rows={records}
+   rows={filterData?filterData:records}
    deleteButton={true}
    editButton={true}
    topLinkButton={"View All Categories"}

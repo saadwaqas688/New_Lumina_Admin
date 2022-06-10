@@ -14,7 +14,7 @@ import Select from "../../UI/Select/Select";
 import * as Yup from "yup";
 import DateAndTimePicker from "../../UI/DateTimePicker/DateTimePicker";
 
-const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categories,records}) => {
+const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categories}) => {
   const [editMode, setEditMode] = useState(false);
   const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif"];
   const INITIAL_FORM_STATE = {
