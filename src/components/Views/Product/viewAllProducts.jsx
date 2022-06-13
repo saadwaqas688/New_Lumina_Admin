@@ -24,19 +24,23 @@ const style = {
 };
 
 const columns = [
-  { id: 'imageContain', label: 'Title', minWidth: 170 },
+  { id: 'imageContain', label: 'Title', minWidth: 170 ,align: 'center'},
+  { id: 'price', label: 'Price', minWidth: 100, align: 'center'
+},
+{ id: 'discountPrice', label: 'DiscountPrice', minWidth: 100, align: 'center'
+},
   {
     id: "quantity",
     label: 'Quantity',
     minWidth: 170,
-    align: 'right',
+    align: 'center'
   },
-  { id: 'Details', label: 'Details', minWidth: 100 },
+  { id: 'Details', label: 'Details', minWidth: 100,align: 'center' },
   {
     id: 'Actions',
     label: 'Actions',
     minWidth: 170,
-    align: 'right',
+    align: 'center'
   },
 ];
 export default function ViewAllProducts() {

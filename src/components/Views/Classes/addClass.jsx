@@ -239,7 +239,7 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
 
 
   return (
-    <Paper >
+    <Paper elevation={0}>
       <Grid container>
         <Grid item xs={12}>
           <Container maxWidth="md">
@@ -351,17 +351,17 @@ const AddClass = ({ recordForEdit,handleModal,getAllClasses,equipments,categorie
                           ) : (
                             <></>
                           )}
-                          <Inputfield name="file" setEditMode={setEditMode} />
+                          <Inputfield name="file" id="raised-button-file"  setEditMode={setEditMode} />
                         </Grid>
                       }
 
                       <Grid item xs={12}>
-                      <Button variant="contained"  color="primary"  
-                                    fullWidth
+                      <Button variant="contained"  color="primary" sx={{marginTop:"40px",marginBottom:"20px",height:"40px",width:"200px",fontWeight:"bold"}}
+                                    disabled={loader?true:false}
                                      onClick={() =>submitForm()
                                    
                                   } >
-                       {loader ? "Please Wait..." : "Submit Form"}
+                       {loader? "Please Wait..." : "Submit Form"}
 
                                     </Button>
                       

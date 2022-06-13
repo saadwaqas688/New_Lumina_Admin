@@ -21,10 +21,11 @@ const AddProduct = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
   const INITIAL_FORM_STATE = {
     name: "",
     price: "",
-    discountPrice: "",
+    discountPrice: "Not given",
     quantity: "",
     description: "",
-    colors: ["red","green","blue"],
+    colors: [ ],
+    weight:[ ],
     file: null,
     imageUrl: "",
     loader: false,
@@ -39,23 +40,25 @@ const AddProduct = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
         .typeError("Please enter a valid phone number")
         .required("Required"),
       price: Yup.number().integer().required("Required"),
-      discountPrice: Yup.number().integer().required("Required"), 
+      discountPrice: Yup.string(), 
       quantity: Yup.string()
         .required("Required"),
 
       description: Yup.string().required("Required"),
-      // colors: Yup.array()
-      //   .of(
-      //     Yup.string("String is Required!")
-      //       .min(4, "Too Short")
-      //       .max(20, "Too Long")
-      //       .required("Required")
-      //   )
-      //   .min(1, "Atleast One Social Media is Required!")
-      //   .required("Required"),
+      weight: Yup.array()
+        .of(
+          Yup.string("String is Required!")
+            
+        ),
+        colors: Yup.array()
+        .of(
+          Yup.string("String is Required!")
+            
+        ),
+        
 
-      // file: Yup.array()
-      //   .required("Required Field")
+      file: Yup.array()
+        .required("Required Field")
     });
   } else {
     FORM_VALIDATION = Yup.object().shape({
@@ -63,22 +66,23 @@ const AddProduct = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
         .typeError("Please enter a valid phone number")
         .required("Required"),
       price: Yup.number().integer().required("Required"),
-      discountPrice: Yup.number().integer().required("Required"), 
+      discountPrice: Yup.string(), 
       quantity: Yup.number()
         .integer()
         .typeError("Please enter a valid phone number")
         .required("Required"),
 
       description: Yup.string().required("Required"),
-      // colors: Yup.array()
-      //   .of(
-      //     Yup.string("String is Required!")
-      //       .min(4, "Too Short")
-      //       .max(20, "Too Long")
-      //       .required("Required")
-      //   )
-      //   .min(1, "Atleast One Social Media is Required!")
-      //   .required("Required"),
+      weight: Yup.array()
+        .of(
+          Yup.string("String is Required!")
+            
+        ),
+        colors: Yup.array()
+        .of(
+          Yup.string("String is Required!")
+            
+        ),
       file: Yup.mixed()
         .nullable()
         .required("Required Field")
@@ -130,7 +134,8 @@ const AddProduct = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
               async (downloadURL) => {
                 const filedata = [values.file[0], values.file[1]];
                 const record = {
-                  colors: ["red","green","blue"],
+                  colors: values.colors,
+                  weight:values.weight,
                   description: values.description,
                   image: downloadURL,
                   likedBy: [],
@@ -160,9 +165,10 @@ const AddProduct = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
         );
       } else {
         const record = {
-          colors: ["red","green","blue"],
+          colors: values.colors,
           description: values.description,
           image: values.image,
+          weight:values.weight,
           likedBy: [],
           name: values.name,
           numberOfViews: [],
@@ -189,7 +195,7 @@ const AddProduct = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
   }, [recordForEdit]);
 
   return (
-    <Paper>
+    <Paper elevation={0}>
       <Grid container>
         <Grid item xs={12}>
           <Container maxWidth="md">
@@ -223,6 +229,7 @@ const AddProduct = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
                           size="small"
                           multiline={true}
                           minRows={4}
+                          maxRows={8}
                         />
                       </Grid>
 
@@ -235,7 +242,61 @@ const AddProduct = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
                         />
                       </Grid>
 
-                      {/* <Grid item xs={12}>
+                      <Grid item xs={12}>
+                        <FieldArray
+                          name="weight"
+                          render={(arrayHelpers) => (
+                            <div>
+                              {values.weight && values.weight.length > 0 && (
+                                <>
+                                  <Grid
+                                    container
+                                    spacing={2}
+                                    style={{ marginBottom: "10px" }}
+                                  >
+                                    {values.weight.map((friend, index) => (
+                                      <Grid item xs={4}>
+                                        <div key={index}>
+                                          <Textfield
+                                            name={`weight.${index}`}
+                                            label="Weight"
+                                            size="small"
+                                          />
+                                        </div>
+                                      </Grid>
+                                    ))}
+                                  </Grid>
+                                </>
+                              )}
+                              <>
+                                {values.weight.length > 0 && (
+                                  <Button  style={{ marginRight: "10px" }}
+                                  variant="contained"  color="primary" size='small'
+                                     onClick={() =>
+                                      arrayHelpers.remove(
+                                        values.weight.length - 1
+                                      )
+                                    } 
+                                   >
+                                       Remove Weight
+                                    </Button>
+                                )}
+                                  <Button variant="contained"  color="primary"  
+                                    size='small'
+                                     onClick={() =>
+                                    arrayHelpers.insert(
+                                      values.weight.length,
+                                      ""
+                                    )
+                                  } >
+                                       Add Weight
+                                    </Button>
+                              </>
+                            </div>
+                          )}
+                        />
+                      </Grid>
+                                         <Grid item xs={12}>
                         <FieldArray
                           name="colors"
                           render={(arrayHelpers) => (
@@ -262,7 +323,7 @@ const AddProduct = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
                                 </>
                               )}
                               <>
-                                {values.colors.length > 1 && (
+                                {values.colors.length > 0 && (
                                   <Button  style={{ marginRight: "10px" }}
                                   variant="contained"  color="primary" size='small'
                                      onClick={() =>
@@ -288,7 +349,7 @@ const AddProduct = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
                             </div>
                           )}
                         />
-                      </Grid> */}
+                      </Grid>
                       {values.error && <div>{values.error}</div>}
 
                       {
@@ -300,22 +361,20 @@ const AddProduct = ({ recordForEdit, records,  handleModal,getAllProducts }) => 
                           ) : (
                             <></>
                           )}
-                          <Inputfield name="file" setEditMode={setEditMode} />
+                          <Inputfield name="file" id="raised-button-file"  setEditMode={setEditMode} />
                         </Grid>
                       }
 
-                      <Grid item xs={12}>
-                      <Button variant="contained"  color="primary"  
-                                    fullWidth
+<Grid item xs={12}>
+                      <Button variant="contained"  color="primary" sx={{marginTop:"40px",marginBottom:"20px",height:"40px",width:"200px",fontWeight:"bold"}}
+                                    disabled={loader?true:false}
                                      onClick={() =>submitForm()
                                    
                                   } >
-                       {loader ? "Please Wait..." : "Submit Form"}
+                       {loader? "Please Wait..." : "Submit Form"}
 
                                     </Button>
-                        {/* <Button>
-                          {loader ? "Please Wait..." : "Submit Form"}
-                        </Button> */}
+                      
                       </Grid>
                     </Grid>
                   </Form>

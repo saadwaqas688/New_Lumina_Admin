@@ -31,7 +31,6 @@ const style = {
 };
 const columns = [
   { id: 'imageContain', label: 'Title', minWidth: 100,    align: 'center'},
-
   { id: 'Details', label: 'Details', minWidth: 100, align: 'center'
 },
   {
