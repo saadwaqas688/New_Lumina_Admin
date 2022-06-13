@@ -19,6 +19,7 @@ const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
     protiens: "",
     fats:"",
     carbs: "",
+    calories:"",
     status:'notFeatured',
     ingredients: [{ ingredient: '', quantity: '' }],
     recipe: [""],
@@ -38,6 +39,7 @@ const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
         protiens: Yup.number().integer().required("Required"),
         fats: Yup.number().integer().required("Required"), 
         carbs: Yup.number().integer().required("Required"),
+        calories: Yup.number().integer().required("Required"),
         ingredients:Yup.array(
           Yup.object({
             ingredient: Yup.string()
@@ -47,7 +49,7 @@ const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
               //   10,
               //   'Ingredient name needs to be at most 10 characters'
               // ),
-            quantity: Yup.number()
+            quantity: Yup.string()
               .required('Quantity needed')
               // .min(1, 'Quantity needs to be at least 1%')
               // .max(100, 'Quantity can be at most 100%'),
@@ -73,11 +75,12 @@ const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
       protiens: Yup.number().integer().required("Required"),
       fats: Yup.number().integer().required("Required"), 
       carbs: Yup.number().integer().required("Required"),
+      calories: Yup.number().integer().required("Required"),
       ingredients:Yup.array(
         Yup.object({
           ingredient: Yup.string()
             .required('Ingredient name needed'),
-          quantity: Yup.number()
+          quantity: Yup.string()
             .required('Quantity needed')
             // .min(1, 'Quantity needs to be at least 1%')
             // .max(100, 'Quantity can be at most 100%'),
@@ -146,6 +149,7 @@ const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
                   status:'notFeatured',
                   fats: values.fats,
                   carbs: values.carbs,
+                  calories: values.calories,
                   ingredients:values.ingredients,
                   recipe: values.recipe,
                   file: filedata,
@@ -172,6 +176,7 @@ const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
           protiens: values.protiens,
           fats: values.fats,
           carbs: values.carbs,
+          calories: values.calories,
           status:values.status,
           ingredients:values.ingredients,
           recipe: values.recipe,
@@ -210,8 +215,11 @@ const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
                   {console.log(values)}
                   <Form>
                     <Grid container spacing={2}>
-                      <Grid item xs={6}>
+                      <Grid item xs={4}>
                         <Textfield name="title" label="Title" size="small" />
+                      </Grid>
+                      <Grid item xs={2}>
+                        <Textfield name="calories" label="Calories" size="small" />
                       </Grid>
                       <Grid item xs={2}>
                         <Textfield name="protiens" label="Protiens" size="small" />
@@ -365,6 +373,7 @@ const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
                       <Grid item xs={12}>
                       <Button variant="contained"  color="primary"  
                                     fullWidth
+                                    disabled={loader?true:false}
                                      onClick={() =>submitForm()
                                    
                                   } >
