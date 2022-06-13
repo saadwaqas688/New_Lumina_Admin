@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Form, FieldArray } from "formik";
 import * as Yup from "yup";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import Textfield from "../../UI/Textfield/TextField";
 import Inputfield from "../../UI/Inputfield/InputField";
 import PreviewImage from "../../UI/PreviewImage/PreviewImage";
 import { Container, Grid,Paper } from "@mui/material";
 import Button from "../../UI/Button/Button";
-import { storage } from "../../../config /Firebase/firebase";
 import { postService, updateService } from "../../../services/services";
 
 const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
   const [editMode, setEditMode] = useState(false);
-  const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif"];
+  // const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif"];
 
   const INITIAL_FORM_STATE = {
     title: "",
@@ -24,7 +22,11 @@ const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
     ingredients: [{ ingredient: '', quantity: '' }],
     recipe: [""],
     file: null,
-    imageUrl: "",
+    file2:null,
+    imageUrl: null,
+    videoUrl:null,
+    fileDataVideo:"",
+    fileDataImage:"",
     loader: false,
     error: null,
   };
@@ -93,83 +95,47 @@ const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
         )
         .min(1, "Atleast One Social Media is Required!")
         .required("Required"),
-      file: Yup.mixed()
-        .nullable()
-        .required("Required Field")
-        .test(
-          "type",
-          "Invalid file format selection",
-          (value) =>
-            !value || (value && SUPPORTED_FORMATS.includes(value[2].type))
-        ),
+      // file: Yup.mixed()
+      //   .nullable()
+      //   .required("Required Field")
+      //   .test(
+      //     "type",
+      //     "Invalid file format selection",
+      //     (value) =>
+      //       !value || (value && SUPPORTED_FORMATS.includes(value[2].type))
+      //   ),
     });
   }
   const initialValues = recordForEdit ? recordForEdit : INITIAL_FORM_STATE;
   const [loader, setloader] = useState(false);
+  const [imageLoader, setImageloader] = useState(false);
+  const [videoLoader, setVideoloader] = useState(false);
 
-  // const classes = useStyles();
+
+
   async function handelclick(values) {
     setloader(true);
-
+    console.log("values",values)
     try {
-      if (values.file[2]) {
-        const value = values.file[2];
-        const name2 = new Date().getTime() + "" + value.name;
-        const storageRef = ref(storage, "photos/" + name2);
-        const uploadTask = uploadBytesResumable(storageRef, value);
-        uploadTask.on(
-          "state_changed",
-          (snapshot) => {
-            const progress =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log("Upload is " + progress + "% done");
-            switch (snapshot.state) {
-              case "paused":
-                console.log("Upload is paused");
-                break;
-              case "running":
-                console.log("Upload is running");
-                break;
-              default:
-                break;
-            }
-          },
-          (error) => {
-            console.log(error);
-            setloader(false);
-          },
-          () => {
-            getDownloadURL(uploadTask.snapshot.ref).then(
-              async (downloadURL) => {
-                const filedata = [values.file[0], values.file[1]];
+      if (!recordForEdit) {
                 const record = {
                   title: values.title,
                   protiens: values.protiens,
-                  image: downloadURL,
                   status:'notFeatured',
                   fats: values.fats,
                   carbs: values.carbs,
                   calories: values.calories,
                   ingredients:values.ingredients,
                   recipe: values.recipe,
-                  file: filedata,
+                  image: values.imageUrl,
+                  video:values.videoUrl,
+                  videofile: values.fileDataVideo,
+                  imagefile: values.fileDataImage, 
                 };
-                if (recordForEdit) {
-                  await updateService("meal",recordForEdit.id,record)
-                  setloader(false);
-                  handleModal();
-                  getAllMeals()
-                } else {
                   await postService("meal",record)
                   setloader(false);
                   handleModal();
                   getAllMeals()
-
-                }
-              }
-            );
-          }
-        );
       } else {
         const record = {
           title: values.title,
@@ -179,8 +145,11 @@ const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
           calories: values.calories,
           status:values.status,
           ingredients:values.ingredients,
-          recipe: values.recipe,
-          file: values.file,
+          recipe:values.recipe,
+          image:values.imageUrl?values.imageUrl:values.image,
+          video:values.videoUrl?values.videoUrl:values.video,
+          videofile:values.fileDataVideo?values.fileDataVideo:values.videofile,
+          imagefile:values.fileDataImage?values.fileDataImage:values.imagefile,
         };
         await updateService("meal",recordForEdit.id,record)
         setloader(false);
@@ -188,7 +157,8 @@ const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
         getAllMeals()
       }
     } catch (error) {
-      console.log("catchError", error);
+      alert(error)
+      setloader(false);
     }
   }
 
@@ -199,7 +169,7 @@ const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
   }, [recordForEdit]);
 
   return (
-    <Paper >
+    <Paper elevation={0}>
       <Grid container>
         <Grid item xs={12}>
           <Container maxWidth="md">
@@ -356,28 +326,36 @@ const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
                         />
                       </Grid>
                       {values.error && <div>{values.error}</div>}
-
-                      {
-                        <Grid item xs={12}>
-                          {recordForEdit && editMode ? (
-                            <PreviewImage url={recordForEdit.image} image={true}/>
+                       
+                      <Grid item xs={12}>
+                          {(recordForEdit && editMode  && recordForEdit.image)? (
+                            <PreviewImage url={recordForEdit.image} image={true} />
                           ) : values.file && values.file[2] ? (
-                            <PreviewImage file={values.file[2]}  image={true}/>
+                            <PreviewImage file={values.file[2]} image={true}/>
                           ) : (
                             <></>
                           )}
-                          <Inputfield name="file" setEditMode={setEditMode} />
+                          <Inputfield name="file" id="raised-button-file" setloader={setImageloader}  videoAndImage={true} video={false} setEditMode={setEditMode} />
                         </Grid>
-                      }
-
+                      
+                          
+                         <Grid item xs={6}>
+                          {(recordForEdit && editMode && recordForEdit.video )? (
+                            <PreviewImage url={recordForEdit.video} image={false} />
+                          ) : values.file2 && values.file2[2] ? (
+                            <PreviewImage file={values.file2[2]} image={false}/>
+                          ) : (
+                            <></>
+                          )}
+                          <Inputfield name="file2" id="raised-button-file2" setloader={setVideoloader}  videoAndImage={true} video={true} setEditMode={setEditMode} />
+                        </Grid> 
                       <Grid item xs={12}>
-                      <Button variant="contained"  color="primary"  
-                                    fullWidth
-                                    disabled={loader?true:false}
+                      <Button variant="contained"  color="primary" sx={{marginTop:"40px",marginBottom:"20px",height:"40px",width:"200px",fontWeight:"bold"}}
+                                    disabled={(loader || imageLoader || videoLoader)?true:false}
                                      onClick={() =>submitForm()
                                    
                                   } >
-                       {loader ? "Please Wait..." : "Submit Form"}
+                       {(loader || imageLoader || videoLoader)? "Please Wait..." : "Submit Form"}
 
                                     </Button>
                       

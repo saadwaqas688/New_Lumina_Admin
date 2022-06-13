@@ -134,7 +134,31 @@ export default function DataTable({
                               </Box>
                             </TableCell>
                           );
-                        } else if (column.id === "time" || column.id === "startingDate") {
+                        }
+                       else if (column.id === "videoContain") {
+                          return (
+                            <TableCell key={column.id} align={column.align}>
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                }}
+                              >
+            
+                                          <video
+                                           src={value.video}
+                                               controls
+                                           style={{ width: "100px", height: "100px" ,borderRadius: "10px" }}
+                               />
+                                <Typography variant="body1">
+                                  <strong>{value.title}</strong>
+                                </Typography>
+                              </Box>
+                            </TableCell>
+                          );
+                        }  else if (column.id === "time" || column.id === "startingDate") {
                           return (
                             <TableCell key={column.id} align={column.align}>
                                <Typography variant="body1">

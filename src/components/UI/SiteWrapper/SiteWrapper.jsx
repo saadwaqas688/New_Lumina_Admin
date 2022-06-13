@@ -15,8 +15,6 @@ import {  Outlet, useNavigate } from 'react-router-dom';
 const drawerWidth = 240;
 
 function SiteWrapper() {
-  // const { window } = props;
-  console.log('window',window)
   const navigate = useNavigate();  
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -40,7 +38,6 @@ function SiteWrapper() {
       )
     }
   },[])
-  // const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: 'flex' }}>
