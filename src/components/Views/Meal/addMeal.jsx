@@ -7,8 +7,9 @@ import PreviewImage from "../../UI/PreviewImage/PreviewImage";
 import { Container, Grid,Paper } from "@mui/material";
 import Button from "../../UI/Button/Button";
 import { postService, updateService } from "../../../services/services";
+import Select from "../../UI/Select/Select";
 
-const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
+const AddMeal = ({ recordForEdit,handleModal,getAllMeals,categories }) => {
   const [editMode, setEditMode] = useState(false);
   // const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif"];
 
@@ -18,6 +19,7 @@ const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
     fats:"",
     carbs: "",
     calories:"",
+    category:"",
     status:'notFeatured',
     ingredients: [{ ingredient: '', quantity: '' }],
     recipe: [""],
@@ -42,6 +44,7 @@ const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
         fats: Yup.number().integer().required("Required"), 
         carbs: Yup.number().integer().required("Required"),
         calories: Yup.number().integer().required("Required"),
+        category:Yup.string().required("Required"),
         ingredients:Yup.array(
           Yup.object({
             ingredient: Yup.string()
@@ -78,6 +81,7 @@ const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
       fats: Yup.number().integer().required("Required"), 
       carbs: Yup.number().integer().required("Required"),
       calories: Yup.number().integer().required("Required"),
+      category:Yup.string().required("Required"),
       ingredients:Yup.array(
         Yup.object({
           ingredient: Yup.string()
@@ -125,6 +129,7 @@ const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
                   fats: values.fats,
                   carbs: values.carbs,
                   calories: values.calories,
+                  category:values.category,
                   ingredients:values.ingredients,
                   recipe: values.recipe,
                   image: values.imageUrl,
@@ -143,6 +148,7 @@ const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
           fats: values.fats,
           carbs: values.carbs,
           calories: values.calories,
+          category:values.category,
           status:values.status,
           ingredients:values.ingredients,
           recipe:values.recipe,
@@ -200,6 +206,17 @@ const AddMeal = ({ recordForEdit,handleModal,getAllMeals }) => {
                       <Grid item xs={2}>
                         <Textfield name="carbs" label="Carbs" size="small" />
                       </Grid>
+                      {!recordForEdit &&
+                      (<Grid item xs={6}>
+                        <Select
+                          name="category"
+                          label="Category"
+                          size="small"
+                          options={categories}
+                          type="item"
+                        />
+                      </Grid>)
+                }
 
                       <Grid item xs={12}>
                         <FieldArray

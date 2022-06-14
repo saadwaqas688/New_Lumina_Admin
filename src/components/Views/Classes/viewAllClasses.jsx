@@ -224,7 +224,7 @@ export default function ViewAllClasses() {
    rows={filterData?filterData:records}
    deleteButton={true}
    editButton={true}
-   topLinkButton={"View All Categories"}
+   topLinkButton={{text:"View All Categories",link:"/classesCategories"}}
    secondTopButton={"Add New Class"}
    setOpenModal={setOpenModal}
   setEditRecord={setEditRecord}

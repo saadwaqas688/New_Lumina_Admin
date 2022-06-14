@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 // import FormikForm from './addMeal';
-import {Box,Skeleton} from '@mui/material';
+import {Box,Skeleton, Typography} from '@mui/material';
 import { deleteAsset, deleteService, getService, updateService } from '../../../services/services';
 // import Popup from '../../UI/Popup/Popup';
 import DataTable from '../../UI/DataTable/DataTable';
 import Modal from "@mui/material/Modal";
 import AddMeal from './addMeal'; 
 import SingleMealDetails from './singleMealDetails'
+import SelectMui from '../../UI/SelectMui/SelectMui';
 
 // const headCells = [
 //     { id: 'title', label: 'Title' },
@@ -50,7 +51,7 @@ export default function ViewAllMeals() {
   const [openModal, setOpenModal] = useState(false);
 
   const [EditRecord, setEditRecord] = useState(false);
-
+  const [categories, setCategories] = useState()
   const [showDetails, setShowDetails] = useState(false);
   
   const [singleRecord, setSingleRecord] = useState()
@@ -58,10 +59,15 @@ export default function ViewAllMeals() {
   const [records, setRecords] = useState()
   const [loading, setLoading] = useState(false)
 
+  const [selectedValue,setSelectedValue]=useState("All")
+  const [filterData,setFilterData]=useState(null)
+
   function handleClose(){
     setEditRecord(false)
     setShowDetails(false)
     setSingleRecord(null)
+    setSelectedValue("All")
+    setFilterData(null)
     setOpenModal(false)
     }
 
@@ -82,6 +88,7 @@ export default function ViewAllMeals() {
 
     useEffect(()=>{
        getAllMeals()
+       getAllMealCategories()
        },[ ])
       
       const deleteMeal = async (record,url) => {        
@@ -91,6 +98,10 @@ export default function ViewAllMeals() {
         await deleteService("meal",record.id)
         const result =records.filter((item)=>item.id!==record.id)
         setRecords(result)
+        if(filterData){
+          const result =filterData.filter((i)=>i.id!==record.id)
+          setFilterData(result)
+        }
       };
 
       const updateStatus = async (id,status) => {
@@ -107,6 +118,32 @@ export default function ViewAllMeals() {
           });   
         setRecords(updatedData) 
     }
+
+    const getAllMealCategories = async() => {
+      let list=[]
+      setLoading(true)
+      const querySnapshot =await getService("mealCategories")
+
+
+      querySnapshot.forEach((doc) => {
+        list.push({id:doc.id,
+            value:doc.data().name})
+              });
+      setCategories(list)
+      setLoading(false)
+          };
+
+
+    const handleChange = (event) => {
+      const value=event.target.value
+      setSelectedValue(value);
+      if(value==="All"){
+        setFilterData(null)
+      }else{
+        const result =records.filter((i)=>i.category.value===value)
+        setFilterData(result)
+      }  
+  };
     return (<>          
 
 {   loading ? (
@@ -139,6 +176,8 @@ export default function ViewAllMeals() {
             handleModal={handleClose}
             getAllMeals={getAllMeals}
             recordForEdit={singleRecord}
+            categories={categories}
+
             /> :
             <AddMeal  
             
@@ -147,6 +186,8 @@ export default function ViewAllMeals() {
             handleModal={handleClose}
             getAllMeals={getAllMeals}
             recordForEdit={null}
+            categories={categories}
+
             />
             
           }
@@ -155,11 +196,29 @@ export default function ViewAllMeals() {
           {/* </Paper> */}
         </Box>
       </Modal>
+
+ { categories &&    <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }}
+          >
+            <SelectMui
+              options={categories}
+              handleChange={handleChange}
+              selectedValue={selectedValue}
+            />
+            <Typography sx={{ fontSize: "18px", fontWeight: "bold" }}>
+              Number of Meals {filterData ? filterData.length : records.length}
+            </Typography>
+          </Box>}
     <DataTable 
     columns={columns}
-     rows={records}
-     editButton={true}
+    rows={filterData?filterData:records}
+    editButton={true}
      deleteButton={true}
+     topLinkButton={{text:"View All Categories",link:"/mealCategories"}}
     //  addNewButton={true}
      secondTopButton={"Add Meal"}
      setOpenModal={setOpenModal}

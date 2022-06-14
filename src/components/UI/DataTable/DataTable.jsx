@@ -66,10 +66,10 @@ export default function DataTable({
         </Button>
       )}
       {topLinkButton && (
-        <RouterLink to="/classesCategories" style={{ textDecoration: "none" }}>
+        <RouterLink to={topLinkButton.link} style={{ textDecoration: "none" }}>
           <Button variant="contained">
             <Typography variant="body1">
-              <strong>{topLinkButton}</strong>
+              <strong>{topLinkButton.text}</strong>
             </Typography>
           </Button>
         </RouterLink>
