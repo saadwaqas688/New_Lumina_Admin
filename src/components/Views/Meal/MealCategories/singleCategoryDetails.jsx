@@ -8,7 +8,7 @@ const SingleCategoryDetails = ({ data }) => {
         <Typography
             variant="h5"
             color="text.secondary"
-            sx={{ mt: "20px", ml: "20px", mr: "20px" }}
+            sx={{ mt: "20px", ml: "20px", mr: "20px" }} 
           >
             Name :
           </Typography>
