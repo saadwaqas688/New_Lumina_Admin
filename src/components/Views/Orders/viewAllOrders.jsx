@@ -5,7 +5,8 @@ import DataTable from '../../UI/DataTable/DataTable';
 import Modal from "@mui/material/Modal";
 import SingleOrderDetails from './singleOrderDetails';
 import AddNotes from './addNotes';
-const style = {
+import Chat from '../Chat/Chat';
+const styleDetails = {
   position: "absolute",
   top: "50%",
   left: "50%",
@@ -14,13 +15,13 @@ const style = {
    height:"80%",
   overflow:'scroll',
   bgcolor: "background.paper",
-  border: "2px solid #fbbe36",
+  border: "2px solid #ff6699",
   p:4,
   boxShadow: 24,
   borderRadius: 2,
 };
 
-const style2 = {
+const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
@@ -29,14 +30,30 @@ const style2 = {
    height:"55%",
   overflow:'hidden',
   bgcolor: "background.paper",
-  border: "2px solid #fbbe36",
+  border: "2px solid #ff6699",
+  p:4,
+  boxShadow: 24,
+  borderRadius: 2,
+};
+
+const styleChat = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "50%",
+  height:"80%",
+  overflow:'scroll',
+  overflowX: "hidden",
+  bgcolor: "background.paper",
+  border: "2px solid #ff6699",
   p:4,
   boxShadow: 24,
   borderRadius: 2,
 };
 const columns = [
   { id: 'name', label: 'Name', minWidth: 170 },
-  { id: 'email', label: 'Email', minWidth: 100 },
+  { id: 'Chat', label: 'Chat', minWidth: 100 },
   { id: 'Notes', label: 'Notes', minWidth: 170 },
   { id: 'Details', label: 'View Details', minWidth: 170 },
 
@@ -63,8 +80,9 @@ export default function ViewAllOrders() {
   
   const [singleRecord, setSingleRecord] = useState()
 
-  const [addNote, setAddNote] = useState()
-
+  const [addNote, setAddNote] = useState()  
+  
+  const [openChat, setOpenChat] = useState(false) 
 
   const [records, setRecords] = useState()
   const [loading, setLoading] = useState(false)
@@ -75,6 +93,7 @@ export default function ViewAllOrders() {
     setShowDetails(false)
     setSingleRecord(null)
     setOpenModal(false)
+    setOpenChat(false)
     }
 
  
@@ -140,7 +159,7 @@ export default function ViewAllOrders() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={showDetails?style:style2}>
+        <Box sx={openChat?styleChat:showDetails?styleDetails:style}>
         { showDetails ?
             <SingleOrderDetails data={singleRecord}/>  :
             EditRecord?
@@ -158,6 +177,9 @@ export default function ViewAllOrders() {
              id={singleRecord.id} 
              
              />:
+             openChat?
+             
+             <Chat previousData={singleRecord}/>:
             <></>
           }
         </Box>
@@ -175,6 +197,7 @@ export default function ViewAllOrders() {
     updateStatus={updateStatus}
     setAddNote={setAddNote}
     setEditRecord={setEditRecord}
+    setOpenChat={setOpenChat}
     
      />
           </>:

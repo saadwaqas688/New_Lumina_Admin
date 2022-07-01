@@ -28,6 +28,7 @@ export default function DataTable({
   deleteRecord,
   updateStatus,
   setAddNote,
+  setOpenChat,
 }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -52,6 +53,9 @@ export default function DataTable({
       setAddNote(true);
       setSingleRecord(record);
 
+    }else if (state === "Chat") {
+      setOpenChat(true);
+      setSingleRecord(record);
     }
     setOpenModal(true);
   }
@@ -181,7 +185,22 @@ export default function DataTable({
                               </Button>
                             </TableCell>
                           );
-                        } else if (column.id === "Details") {
+                        } else if (column.id === "Chat") {
+                          return (
+                            <TableCell key={column.id} align={column.align}>
+                              <Button
+                                variant="contained"
+                                onClick={() => {
+                                  openInPopup(row, "Chat");
+                                }}
+                              >
+                                <Typography variant="body1">
+                                  <strong>Messages</strong>
+                                </Typography>
+                              </Button>
+                            </TableCell>
+                          );
+                        }  else if (column.id === "Details") {
                           return (
                             <TableCell key={column.id} align={column.align}>
                               <Button

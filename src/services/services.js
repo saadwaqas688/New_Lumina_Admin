@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
 import { db, storage } from "../config /Firebase/firebase";
 
@@ -45,3 +45,9 @@ import { db, storage } from "../config /Firebase/firebase";
               console.log(error.message);
             });
         };
+
+
+        export   const getServiceById = async(path,id) => {
+          const docRef = doc(db, path, id);
+          return await getDoc(docRef);
+          };
