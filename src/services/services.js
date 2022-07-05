@@ -51,3 +51,7 @@ import { db, storage } from "../config /Firebase/firebase";
           const docRef = doc(db, path, id);
           return await getDoc(docRef);
           };
+
+          export   const getSubCollectionService = async(path,id,subCollection) => {
+            return await getDocs(collection(db, path,id,subCollection));
+            };
