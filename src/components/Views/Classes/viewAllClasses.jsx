@@ -25,7 +25,7 @@ const columns = [
   { id: 'imageContain', label: 'Title', minWidth: 100,align: 'center' },
   { id: 'classCategory', label: 'Category', minWidth: 100,align: 'center' },
   { id: 'startingDate', label: 'Starting Date', minWidth: 100,align: 'center' },
-  { id: 'Details', label: 'Details', minWidth: 100,align: 'center'},
+  { id: 'linkDetails', label: 'Details', minWidth: 100,align: 'center'},
   {
     id: 'Actions',
     label: 'Actions',
@@ -69,17 +69,17 @@ export default function ViewAllClasses() {
           list.push({id:doc.id,
               ...doc.data()})
                 });
-                list.map((item)=>{
+                list.map((element)=>{
                   return(
                   
-                 item.classes.map((item)=> {
+                 element.classes.map((item)=> {
                    return(
                      item.imageContain={image:item.image,title:item.title},
                      item.classCategory=item.category.value,
+                     item.link=`/classesCategories/${element.id}/${item.id}`,
                      item.equipments=item.equipments.map((ele)=>{
                        return ele.id
                      }),
-
 
                     newList.push(item)
                    )

@@ -8,6 +8,7 @@ import SiteWrapper from "../components/UI/SiteWrapper/SiteWrapper";
 import ViewAllAdminUsers from "../components/Views/AdminUsers/viewAllAdminUsers";
 import ViewAllBlogs from "../components/Views/Blogs/viewAllBlogs";
 import ViewAllClassCategories from "../components/Views/ClassCategories/viewAllClassCategories";
+import SingleClassDetails from "../components/Views/Classes/singleClassDetails";
 import ViewAllClasses from "../components/Views/Classes/viewAllClasses";
 import Login from "../components/Views/Login/login";
 import ViewAllMealCategories from "../components/Views/Meal/MealCategories/viewAllMealCategories";
@@ -31,6 +32,9 @@ const ApplicationRoutes = () => {
 <Route path="/users" element={<ViewAllUsers/>} />
 <Route path="/classes" element={<ViewAllClasses/>} />
 <Route path="/classesCategories" element={<ViewAllClassCategories/>} />
+
+<Route path="/classesCategories/:categoryId/:classId" element={<SingleClassDetails/>} />
+
 <Route path="/blogs" element={<ViewAllBlogs/>} />
 <Route path="/orders" element={<ViewAllOrders/>} />
 </Route>

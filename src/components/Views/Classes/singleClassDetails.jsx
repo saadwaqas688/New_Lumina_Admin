@@ -1,15 +1,22 @@
-import { Box, Grid, Paper, TextField, Typography } from "@mui/material";
+import { Box, Grid, Paper, Skeleton, TextField, Typography } from "@mui/material";
 import { doc, getDoc } from "firebase/firestore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { db } from "../../../config /Firebase/firebase";
-import { updateService } from "../../../services/services";
+import { getServiceById, updateService } from "../../../services/services";
 import Button from "../../UI/Button/Button";
-const SingleClassDetails = ({ data ,getAllClasses, handleModal}) => {
+import { useParams } from "react-router-dom";
+
+const SingleClassDetails = () => {
   const [linkField, setLinkField] = useState(false);
   const [link, setLink] = useState(null);
   const [id, setId] = useState(null);
   const [loading, setLoading] = useState(null);
   const [time, setTime] = useState(null);
+  const [data, setData] = useState(null);
+
+
+
+  let { categoryId,classId } = useParams();
 
 
 function handleChange(e){
@@ -47,9 +54,8 @@ async function handleDelete(classTime,userId){
 
   list.classes=finalData
     await updateService("classCategories",data.category.id,list)
-    getAllClasses()
-    handleModal()
     setLoading(false)
+    getSingleClass()
 }
    
 }
@@ -83,10 +89,9 @@ async function handleSubmit(){
   console.log('finalData',list)
 
     await updateService("classCategories",data.category.id,list)
-    getAllClasses()
-    handleModal()
     setLinkField(false)
     setLoading(false)
+    getSingleClass()
 
 }
     
@@ -95,8 +100,50 @@ async function handleSubmit(){
   e.preventDefault()
   handleSubmit()
 }
+
+async function getSingleClass(){
+  setLoading(true)
+  const docSnap= await getServiceById("classCategories",categoryId)
+    
+  if (docSnap.exists()) {
+    console.log("Document data:", docSnap.data().classes);
+
+    const classes=docSnap.data().classes
+
+ 
+
+    classes.forEach((item)=>{
+      if(item.id==classId){
+        setData(item)
+      }
+
+    })
+    setLoading(false)
+
+  } else {
+    setLoading(false)
+
+    console.log("No such document!");
+  }
+}
+
+
+useEffect(()=>{
+  if(categoryId && classId)
+  getSingleClass()
+
+},[])
   return (
-    <Paper elevation={6}>
+    <>
+        {   loading ? (
+      <>
+            <Skeleton variant="text" height={100} />
+            <Skeleton variant="text" height={20} />
+            <Skeleton variant="text" height={20} />
+            <Skeleton variant="rectangular" height={300} />
+      </>
+        ):data?
+    <Paper elevation={0}>
       <Grid container spacing={2} sx={{ padding: "10px" }}>
         <Grid item xs={12} md={6}>
           <Typography
@@ -275,6 +322,9 @@ async function handleSubmit(){
         </Grid>
       </Grid>
     </Paper>
+    :<div>No Data Exist</div>
+}
+</>
   );
 };
 

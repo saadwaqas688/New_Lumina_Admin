@@ -215,6 +215,18 @@ export default function DataTable({
                               </Button>
                             </TableCell>
                           );
+                        } else if (column.id === "linkDetails") {
+                          return (
+                            <TableCell key={column.id} align={column.align}>
+                                                          <RouterLink to={row.link} style={{ textDecoration: "none" }}>
+          <Button variant="contained">
+            <Typography variant="body1">
+              <strong>Details</strong>
+            </Typography>
+          </Button>
+        </RouterLink>
+                            </TableCell>
+                          );
                         } 
                         else if (column.id === "status") {
                           return (
